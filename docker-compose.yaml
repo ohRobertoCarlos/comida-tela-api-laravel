@@ -22,5 +22,7 @@ services:
       MARIADB_DATABASE : comidatela
       MARIADB_USER : comidatela
       MARIADB_PASSWORD: acWa545Ksdf4
+    ports:
+      - 3306:3306
     volumes:
       - ./docker/mysql/data:/var/lib/mysql
