@@ -13,10 +13,14 @@ services:
       - db
 
   db:
-    image: postgres
+    image: mariadb:11.1
     container_name: database-container
+    command: --default-authentication-plugin=mysql_native_password
     restart: always
-    ports:
-      - 5432:5432
     environment:
-      POSTGRES_PASSWORD: acWa545Ksdf4
+      MARIADB_ROOT_PASSWORD: dPdOGs46sj
+      MARIADB_DATABASE : comidatela
+      MARIADB_USER : comidatela
+      MARIADB_PASSWORD: acWa545Ksdf4
+    volumes:
+      - ./docker/mysql/data:/var/lib/mysql
