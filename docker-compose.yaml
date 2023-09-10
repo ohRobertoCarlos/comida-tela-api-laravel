@@ -1,0 +1,22 @@
+version: '3.7'
+services:
+  app:
+    build: ./docker/php-apache
+    container_name: container-app
+    working_dir: /var/www/html
+    volumes:
+      - ./api/:/var/www/html
+      - ./docker/php-apache/000-default.conf:/etc/apache2/sites-available/000-default.conf
+    ports:
+      - 8000:80
+    depends_on:
+      - db
+
+  db:
+    image: postgres
+    container_name: database-container
+    restart: always
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_PASSWORD: acWa545Ksdf4
