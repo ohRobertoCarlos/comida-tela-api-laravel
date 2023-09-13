@@ -3,7 +3,7 @@
 use App\Auth\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
 
-Route::middleware('api')
+Route::middleware(['throttle:rate-limiter-api'])
     ->prefix('v1/auth')
     ->group(function() {
         Route::middleware(['auth:api'])->group(function() {
