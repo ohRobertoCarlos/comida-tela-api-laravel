@@ -1,11 +1,11 @@
 <?php
 namespace App\Auth\Http\Controllers;
 
+use App\Auth\Http\Requests\LoginRequest;
+use App\Auth\Http\Requests\RegisterUserRequest;
 use App\Auth\Services\AuthService;
 use App\Http\Controllers\BaseController;
-use App\Models\User;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
 class AuthController extends BaseController
@@ -13,13 +13,11 @@ class AuthController extends BaseController
     public function __construct(
         private AuthService $authService
     )
-    {
-        //
-    }
+    {}
 
-    public function login()
+    public function login(LoginRequest $request) : JsonResponse
     {
-        $credentials = request(['email', 'password']);
+        $credentials = $request->validated();
 
         if (! $token = auth()->attempt($credentials)) {
             return response()->json(['error' => __('auth.unauthorized')], 401);
@@ -28,16 +26,10 @@ class AuthController extends BaseController
         return $this->respondWithToken($token);
     }
 
-    public function register(Request $request)
+    public function register(RegisterUserRequest $request) : JsonResponse
     {
-        $userData = $request->validate([
-            'email' => ['required','email'],
-            'password' => ['required','confirmed','regex:/^(?=.*\d)(?=.*\W)[\da-zA-Z\W]{6,}$/'],
-            'name' => ['required', 'min:2']
-        ]);
+        $userData = $request->validated();
 
-        // $userEmailExists = $this->repository->findByEmail($userData['email']);
-        // $userEmailExists = User::where('email', $userData['email'])->first();
         $userEmailExists = $this->authService->getUserByEmail($userData['email']);
         if (!empty($userEmailExists)) {
             abort(403, __('auth.user_email_exists'));
@@ -55,7 +47,7 @@ class AuthController extends BaseController
         ]);
     }
 
-    public function me()
+    public function me() : JsonResponse
     {
         return response()->json(auth()->user());
     }
@@ -67,11 +59,7 @@ class AuthController extends BaseController
         return response()->json(['message' => __('auth.successfully_logged_out')]);
     }
 
-    /**
-     * Refresh a token.
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
+
     public function refresh() : JsonResponse
     {
         return $this->respondWithToken(auth()->refresh());
