@@ -16,5 +16,10 @@ return [
     'failed' => 'These credentials do not match our records.',
     'password' => 'The provided password is incorrect.',
     'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
+    'unauthorized' => 'Unauthorized.',
+    'successfully_logged_out' => 'Successfully logged out.',
+    'user_email_exists' => 'User email exists.',
+    'not_create_user' => 'Cold not create a user.',
+    'invalid_email' => 'Invalid email.',
 
 ];

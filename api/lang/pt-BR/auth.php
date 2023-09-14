@@ -19,5 +19,6 @@ return [
     'unauthorized' => 'Não autorizado.',
     'successfully_logged_out' => 'Deslogado com sucesso.',
     'user_email_exists' => 'Já existe um usuário com esse e-mail!',
-    'not_create_user' => 'Não foi possível criar o usuário.'
+    'not_create_user' => 'Não foi possível criar o usuário.',
+    'invalid_email' => 'E-mail inválido'
 ];

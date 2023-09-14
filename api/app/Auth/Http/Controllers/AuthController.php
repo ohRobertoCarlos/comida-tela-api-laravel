@@ -1,6 +1,7 @@
 <?php
 namespace App\Auth\Http\Controllers;
 
+use App\Auth\Services\AuthService;
 use App\Http\Controllers\BaseController;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
@@ -9,7 +10,9 @@ use Illuminate\Support\Facades\Hash;
 
 class AuthController extends BaseController
 {
-    public function __construct()
+    public function __construct(
+        private AuthService $authService
+    )
     {
         //
     }
@@ -34,14 +37,15 @@ class AuthController extends BaseController
         ]);
 
         // $userEmailExists = $this->repository->findByEmail($userData['email']);
-        $userEmailExists = User::where('email', $userData['email'])->first();
+        // $userEmailExists = User::where('email', $userData['email'])->first();
+        $userEmailExists = $this->authService->getUserByEmail($userData['email']);
         if (!empty($userEmailExists)) {
             abort(403, __('auth.user_email_exists'));
         }
 
         $userData['password'] = Hash::make($userData['password']);
 
-        if (!$user = User::create($userData))
+        if (!$user = $this->authService->createUser($userData))
             abort(500, __('auth.not_create_user'));
 
         return response()->json([
