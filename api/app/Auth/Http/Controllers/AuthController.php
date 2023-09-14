@@ -19,7 +19,7 @@ class AuthController extends BaseController
         $credentials = request(['email', 'password']);
 
         if (! $token = auth()->attempt($credentials)) {
-            return response()->json(['error' => 'Unauthorized'], 401);
+            return response()->json(['error' => __('auth.unauthorized')], 401);
         }
 
         return $this->respondWithToken($token);
@@ -30,19 +30,19 @@ class AuthController extends BaseController
         $userData = $request->validate([
             'email' => ['required','email'],
             'password' => ['required','confirmed','regex:/^(?=.*\d)(?=.*\W)[\da-zA-Z\W]{6,}$/'],
-            'name' => 'min:2'
+            'name' => ['required', 'min:2']
         ]);
 
         // $userEmailExists = $this->repository->findByEmail($userData['email']);
         $userEmailExists = User::where('email', $userData['email'])->first();
         if (!empty($userEmailExists)) {
-            abort(403, 'Já existe um usuário com esse e-mail!');
+            abort(403, __('auth.user_email_exists'));
         }
 
         $userData['password'] = Hash::make($userData['password']);
 
         if (!$user = User::create($userData))
-            abort(500, 'Could not create user');
+            abort(500, __('auth.not_create_user'));
 
         return response()->json([
             'data' => [
@@ -60,7 +60,7 @@ class AuthController extends BaseController
     {
         auth()->logout();
 
-        return response()->json(['message' => 'Successfully logged out']);
+        return response()->json(['message' => __('auth.successfully_logged_out')]);
     }
 
     /**
