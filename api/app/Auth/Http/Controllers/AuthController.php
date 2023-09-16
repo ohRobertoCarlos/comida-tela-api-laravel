@@ -3,6 +3,8 @@ namespace App\Auth\Http\Controllers;
 
 use App\Auth\Http\Requests\LoginRequest;
 use App\Auth\Http\Requests\RegisterUserRequest;
+use App\Auth\Http\Resources\JwtToken;
+use App\Auth\Http\Resources\User;
 use App\Auth\Services\AuthService;
 use App\Http\Controllers\BaseController;
 use Illuminate\Http\JsonResponse;
@@ -15,7 +17,10 @@ class AuthController extends BaseController
     )
     {}
 
-    public function login(LoginRequest $request) : JsonResponse
+    /**
+    * @unauthenticated
+    */
+    public function login(LoginRequest $request) : JwtToken
     {
         $credentials = $request->validated();
 
@@ -23,10 +28,13 @@ class AuthController extends BaseController
             return response()->json(['error' => __('auth.unauthorized')], 401);
         }
 
-        return $this->respondWithToken($token);
+        return new JwtToken($token);
     }
 
-    public function register(RegisterUserRequest $request) : JsonResponse
+    /**
+    * @unauthenticated
+    */
+    public function register(RegisterUserRequest $request) : User
     {
         $userData = $request->validated();
 
@@ -40,16 +48,12 @@ class AuthController extends BaseController
         if (!$user = $this->authService->createUser($userData))
             abort(500, __('auth.not_create_user'));
 
-        return response()->json([
-            'data' => [
-                'user' => $user
-            ]
-        ]);
+        return new User($user);
     }
 
-    public function me() : JsonResponse
+    public function me() : User
     {
-        return response()->json(auth()->user());
+        return new User(auth()->user());
     }
 
     public function logout() : JsonResponse
@@ -60,17 +64,8 @@ class AuthController extends BaseController
     }
 
 
-    public function refresh() : JsonResponse
+    public function refresh() : JwtToken
     {
-        return $this->respondWithToken(auth()->refresh());
-    }
-
-    protected function respondWithToken($token) : JsonResponse
-    {
-        return response()->json([
-            'access_token' => $token,
-            'token_type' => 'bearer',
-            'expires_in' => auth()->factory()->getTTL() * 60
-        ]);
+        return new JwtToken(auth()->refresh());
     }
 }
