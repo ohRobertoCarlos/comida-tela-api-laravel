@@ -1,9 +1,16 @@
 {
-    "name": "laravel/laravel",
+    "name": "ohrobertocarlos/comida-tela-api",
     "type": "project",
-    "description": "The skeleton application for the Laravel framework.",
-    "keywords": ["laravel", "framework"],
+    "description": "API da aplicação comida na tela.",
+    "keywords": ["api", "comida na tela"],
     "license": "MIT",
+    "authors": [
+        {
+            "name": "Roberto Carlos",
+            "email": "robertocarlosdeveloper@gmail.com",
+            "role": "Developer"
+        }
+    ],
     "require": {
         "php": "^8.1",
         "dedoc/scramble": "^0.8.3",
