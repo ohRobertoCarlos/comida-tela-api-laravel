@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('establishments', function (Blueprint $table) {
             $table->uuid('id')->primary();
 
-            $table->string('name', 100);
-            $table->text('description');
+            $table->string('name', 100)->unique();
+            $table->text('description')->nullable();
             
             $table->timestamps();
             $table->softDeletes();
