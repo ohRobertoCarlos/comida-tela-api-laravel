@@ -10,7 +10,7 @@ abstract class BaseRepository implements Repository
 {
     protected BaseModel $model;
 
-    protected function getModel() : BaseModel
+    public function getModel() : BaseModel
     {
         return $this->model;
     }
