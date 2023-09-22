@@ -25,3 +25,18 @@ test('must can view establishments', function () {
 
     $reponse->assertSuccessful();
 });
+
+test("must cannot create establishments", function () {
+    $token = getTokenUserLogged();
+    $establishment = (new \App\Establishments\Repositories\EstablishmentRepository())
+        ->getModel()
+        ->factory()
+        ->make();
+
+    $reponse = withHeaders([
+        'accept' => 'application/json',
+        'Authorization' => 'Bearer ' . $token
+    ])->postJson('/api/v1/establishments', $establishment->toArray());
+
+    $reponse->assertForbidden();
+});
