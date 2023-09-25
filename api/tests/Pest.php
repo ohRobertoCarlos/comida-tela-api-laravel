@@ -23,3 +23,19 @@ function getTokenUserAdminLogged() : string
         'password' => 'password'
     ]);
 }
+
+function makeEstablishment() : \App\Models\BaseModel
+{
+    return (new \App\Establishments\Repositories\EstablishmentRepository())
+        ->getModel()
+        ->factory()
+        ->make();
+}
+
+function createEstablishment() : \App\Models\BaseModel
+{
+    return (new \App\Establishments\Repositories\EstablishmentRepository())
+        ->getModel()
+        ->factory()
+        ->create();
+}
