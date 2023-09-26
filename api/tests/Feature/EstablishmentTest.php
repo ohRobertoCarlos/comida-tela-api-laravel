@@ -68,7 +68,7 @@ test("must update establishments", function () {
     $establishment = createEstablishment();
 
     $establishment->name = 'Restaurant SA';
-    $establishment->name = fake()->text();
+    $establishment->description = fake()->text();
 
     $reponse = withHeaders([
         'accept' => 'application/json',
