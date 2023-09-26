@@ -16,7 +16,8 @@ return new class extends Migration
 
             $table->string('name', 100)->unique();
             $table->text('description')->nullable();
-            
+            $table->string('menu_code', 150)->unique();
+
             $table->timestamps();
             $table->softDeletes();
         });
@@ -116,7 +117,7 @@ return new class extends Migration
             $table->dropForeign('menus_establishment_id_foreign');
         });
         Schema::dropIfExists('menus');
-        
+
         Schema::table('ratings', function(Blueprint $table) {
             $table->dropForeign('ratings_establishment_id_foreign');
         });

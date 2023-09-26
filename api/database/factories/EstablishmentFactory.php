@@ -27,6 +27,7 @@ class EstablishmentFactory extends Factory
         return [
             'name' => fake()->company(),
             'description' => fake()->text(),
+            'menu_code' => fake()->slug()
         ];
     }
 }

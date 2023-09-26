@@ -16,7 +16,8 @@ class Establishment extends BaseModel
 
     protected $fillable = [
         'name',
-        'description'
+        'description',
+        'menu_code',
     ];
 
     /**

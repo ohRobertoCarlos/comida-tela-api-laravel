@@ -28,7 +28,7 @@ class EstablishmentController extends BaseController
     public function show(UserIsAdminRequest $request, $establishmentId) : Establishment|JsonResponse
     {
         try {
-            $establishment = $this->service->get($establishmentId);
+            $establishment = $this->service->get(id: $establishmentId);
         } catch(Throwable $e) {
             Log::error($e->getMessage());
         }
@@ -45,7 +45,7 @@ class EstablishmentController extends BaseController
     public function store(CreateEstablishmentRequest $request) : Establishment|JsonResponse
     {
         try {
-            $establishment = $this->service->create($request->validated());
+            $establishment = $this->service->create(data: $request->validated());
         } catch(Throwable $e) {
             Log::error($e->getMessage());
         }
@@ -62,7 +62,7 @@ class EstablishmentController extends BaseController
     public function update(UpdateEstablishmentRequest $request, $establishmentId) : JsonResponse
     {
         try {
-            $establishment = $this->service->update($establishmentId, $request->validated());
+            $establishment = $this->service->update(id: $establishmentId, data: $request->validated());
         } catch(Throwable $e) {
             Log::error($e->getMessage());
         }
@@ -81,7 +81,7 @@ class EstablishmentController extends BaseController
     public function destroy(UserIsAdminRequest $request, $establishmentId)
     {
         try {
-            $establishment = $this->service->delete($establishmentId);
+            $establishment = $this->service->delete(id: $establishmentId);
         } catch(Throwable $e) {
             Log::error($e->getMessage());
         }

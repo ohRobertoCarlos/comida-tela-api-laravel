@@ -5,7 +5,11 @@ namespace App\Establishments\Services;
 use App\Contracts\Repository;
 use App\Establishments\Repositories\EstablishmentRepository;
 use App\Models\BaseModel;
+use chillerlan\QRCode\QRCode;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class EstablishmentService
 {
@@ -26,7 +30,20 @@ class EstablishmentService
 
     public function create(array $data) : BaseModel|null
     {
-        return $this->repository->create($data);
+        $data['menu_code'] = Str::slug($data['name'] ?? '', '-');
+
+        DB::beginTransaction();
+        try {
+            $establishment = $this->repository->create($data);
+            $this->createMenu(establishment: $establishment);
+            $this->createProfile(establishment: $establishment);
+            DB::commit();
+        } catch (\Throwable $e) {
+            DB::rollBack();
+            throw $e;
+        }
+
+        return $establishment;
     }
 
     public function update(string $id, array $data) : bool
@@ -37,5 +54,30 @@ class EstablishmentService
     public function delete(string $id) : bool
     {
         return $this->repository->delete($id);
+    }
+
+    public function createMenu(BaseModel $establishment) : void
+    {
+        $qrCodePath = $this->generateQrCodeMenu(establishment: $establishment);
+        $this->repository->createMenu(establishment: $establishment, qrCodeImagePath: $qrCodePath);
+    }
+
+    public function createProfile(BaseModel $establishment) : void
+    {
+        $this->repository->createProfile($establishment);
+    }
+
+    public function generateQrCodeMenu(BaseModel $establishment) : string
+    {
+        $base64 = (new QRCode())->render(url('/' . $establishment->menu_code));
+        $base64 = str_replace('data:image/png;base64,', '', $base64);
+        $base64 = str_replace(' ', '+', $base64);
+
+        $path = 'menus/qrcodes/' . $establishment->id . '.png';
+        if (!Storage::put($path, base64_decode($base64))) {
+            throw new \Exception('Unable to save file');
+        }
+
+        return $path;
     }
 }
