@@ -69,7 +69,9 @@ class EstablishmentService
 
     public function generateQrCodeMenu(BaseModel $establishment) : string
     {
-        $base64 = (new QRCode())->render(url('/' . $establishment->menu_code));
+        $base64 = (new QRCode())->render(
+            env('APP_CLIENT_URL', 'http://localhost:3000') . '/' . $establishment->menu_code
+        );
         $base64 = str_replace('data:image/png;base64,', '', $base64);
         $base64 = str_replace(' ', '+', $base64);
 
