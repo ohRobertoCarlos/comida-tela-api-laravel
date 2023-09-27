@@ -7,4 +7,6 @@ Route::middleware(['auth:api', 'throttle:rate-limiter-api'])
     ->prefix('api/v1')
     ->group(function() {
        Route::apiResource('establishments', EstablishmentController::class);
+       Route::post('establishments/{establishment_id}/users', [EstablishmentController::class, 'createUser']);
+       Route::get('establishments/{establishment_id}/users', [EstablishmentController::class, 'getUsers']);
     });

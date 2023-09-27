@@ -15,7 +15,7 @@ use Illuminate\Auth\MustVerifyEmail;
 use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Foundation\Auth\Access\Authorizable;
 
-class User extends BaseModel implements 
+class User extends BaseModel implements
     JWTSubject,
     AuthenticatableContract,
     AuthorizableContract,
@@ -32,6 +32,7 @@ class User extends BaseModel implements
         'name',
         'email',
         'password',
+        'establishment_id'
     ];
 
     /**

@@ -2,11 +2,13 @@
 
 namespace App\Establishments\Repositories;
 
+use App\Auth\Repositories\UserRepository;
 use App\Establishments\Models\Establishment;
 use App\Menus\Repositories\MenuRepository;
 use App\Models\BaseModel;
 use App\Profiles\Repositories\ProfileRepository;
 use App\Repositories\BaseRepository;
+use Illuminate\Support\Collection;
 
 class EstablishmentRepository extends BaseRepository
 {
@@ -46,5 +48,32 @@ class EstablishmentRepository extends BaseRepository
     private function getProfileRepository() : BaseRepository
     {
         return new ProfileRepository();
+    }
+
+    public function createUser(string $establishmentId, array $data)
+    {
+        try {
+            $establishment = $this->findById($establishmentId);
+
+            if (empty($establishment)) {
+                throw new \Exception('Establishment not found');
+            }
+        } catch (\Throwable $e) {
+            throw new \Exception('Establishment not found');
+        }
+
+        $data['establishment_id'] = $establishment->id;
+
+        return $this->getUserRepository()->create($data);
+    }
+
+    private function getUserRepository() : BaseRepository|UserRepository
+    {
+        return new UserRepository();
+    }
+
+    public function getUsers(string $establishmentId) : Collection
+    {
+        return $this->getUserRepository()->getAllByEstablishmentId(establishmentId: $establishmentId);
     }
 }

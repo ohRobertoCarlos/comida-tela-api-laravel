@@ -7,5 +7,6 @@ return [
     'not_update_establishment' => 'Não foi possível atualizar um estabelecimento.',
     'success_update_establishment' => 'Estabelecimento atualizado com sucesso.',
     'not_delete_establishment' => 'Não foi possível deletar um estabelecimento.',
-    'success_delete_establishment' => 'Estabelecimento deletado com sucesso.'
+    'success_delete_establishment' => 'Estabelecimento deletado com sucesso.',
+    'cold_not_create_user' => 'Não foi possível criar o usuário.',
 ];

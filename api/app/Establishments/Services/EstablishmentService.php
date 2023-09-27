@@ -82,4 +82,14 @@ class EstablishmentService
 
         return $path;
     }
+
+    public function createUser(string $establishmentId, array $data) : BaseModel
+    {
+        return $this->repository->createUser(establishmentId: $establishmentId, data: $data);
+    }
+
+    public function getUsers(string $establishmentId)
+    {
+        return $this->repository->getUsers(establishmentId: $establishmentId);
+    }
 }

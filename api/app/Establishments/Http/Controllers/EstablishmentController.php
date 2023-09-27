@@ -2,7 +2,9 @@
 
 namespace App\Establishments\Http\Controllers;
 
+use App\Auth\Http\Resources\User;
 use App\Establishments\Http\Requests\CreateEstablishmentRequest;
+use App\Establishments\Http\Requests\CreateUserRequest;
 use App\Establishments\Http\Requests\UpdateEstablishmentRequest;
 use App\Establishments\Http\Requests\UserIsAdminRequest;
 use App\Establishments\Http\Resources\Establishment;
@@ -95,5 +97,29 @@ class EstablishmentController extends BaseController
         return response()->json([
             'message' => __('establishments.success_delete_establishment')
         ], 200);
+    }
+
+    public function createUser(CreateUserRequest $request, string $establishmentId) : User|JsonResponse
+    {
+        try {
+            $user = $this->service->createUser(establishmentId: $establishmentId, data: $request->validated());
+        } catch(Throwable $e) {
+            Log::error($e->getMessage());
+        }
+
+        if (empty($user)) {
+            return response()->json([
+                'message' => __('establishments.cold_not_create_user')
+            ], 400);
+        }
+
+        return new User($user);
+    }
+
+    public function getUsers(UserIsAdminRequest $request, string $establishmentId)
+    {
+        $users = $this->service->getUsers(establishmentId: $establishmentId);
+
+        return User::collection($users);
     }
 }

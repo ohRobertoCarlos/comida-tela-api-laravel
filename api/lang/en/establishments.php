@@ -7,5 +7,6 @@ return [
     'not_update_establishment' => 'Cold not update an establishment.',
     'success_update_establishment' => 'Establishment successfully updated',
     'not_delete_establishment' => 'Cold not delete an establishment.',
-    'success_delete_establishment' => 'Establishment successfully deleted'
+    'success_delete_establishment' => 'Establishment successfully deleted.',
+    'cold_not_create_user' => 'Cold not create an user.',
 ];
