@@ -40,6 +40,7 @@ test("must cannot create establishments", function () {
 test("must create establishments", function () {
     $token = getTokenUserAdminLogged();
     $establishment = makeEstablishment();
+    \Illuminate\Support\Facades\Storage::fake('test-disk');
 
     $reponse = withHeaders([
         'accept' => 'application/json',
