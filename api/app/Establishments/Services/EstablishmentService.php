@@ -6,6 +6,7 @@ use App\Contracts\Repository;
 use App\Establishments\Repositories\EstablishmentRepository;
 use App\Models\BaseModel;
 use chillerlan\QRCode\QRCode;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -85,7 +86,11 @@ class EstablishmentService
 
     public function createUser(string $establishmentId, array $data) : BaseModel
     {
-        return $this->repository->createUser(establishmentId: $establishmentId, data: $data);
+        $user = $this->repository->createUser(establishmentId: $establishmentId, data: $data);
+
+        event(new Registered($user));
+
+        return $user;
     }
 
     public function getUsers(string $establishmentId)

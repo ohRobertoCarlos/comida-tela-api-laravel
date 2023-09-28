@@ -20,5 +20,8 @@ return [
     'successfully_logged_out' => 'Deslogado com sucesso.',
     'user_email_exists' => 'Já existe um usuário com esse e-mail!',
     'not_create_user' => 'Não foi possível criar o usuário.',
-    'invalid_email' => 'E-mail inválido'
+    'invalid_email' => 'E-mail inválido',
+    'user_not_found' => 'Usuário não encontrado.',
+    'resend_email_verification' => 'E-mail de verificação enviado.',
+    'user_already_verified' => 'O usuário já está com o e-mail verificado.'
 ];

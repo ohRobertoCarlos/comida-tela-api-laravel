@@ -21,5 +21,7 @@ return [
     'user_email_exists' => 'User email exists.',
     'not_create_user' => 'Cold not create a user.',
     'invalid_email' => 'Invalid email.',
-
+    'user_not_found' => 'User not found.',
+    'resend_email_verification' => 'Verification e-mail sended.',
+    'user_already_verified' => 'E-mail user already verified.'
 ];
