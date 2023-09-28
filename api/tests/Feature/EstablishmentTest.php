@@ -102,3 +102,59 @@ test("must delete establishments", function () {
 
     $reponse->assertOk();
 });
+
+
+test("must cannot list users of establishment", function () {
+    $token = getTokenUserLogged();
+    $establishment = createEstablishment();
+
+    $reponse = withHeaders([
+        'accept' => 'application/json',
+        'Authorization' => 'Bearer ' . $token
+    ])->get('/api/v1/establishments/' . $establishment->id .'/users');
+
+    $reponse->assertForbidden();
+});
+
+test("must list users of establishment", function () {
+    $token = getTokenUserAdminLogged();
+    $establishment = createEstablishment();
+
+    $reponse = withHeaders([
+        'accept' => 'application/json',
+        'Authorization' => 'Bearer ' . $token
+    ])->get('/api/v1/establishments/' . $establishment->id .'/users');
+
+    $reponse->assertOk();
+});
+
+test("must not create user of establishment", function () {
+    $token = getTokenUserLogged();
+    $establishment = createEstablishment();
+    $repository = new \App\Auth\Repositories\UserRepository();
+    $user = $repository->getModel()->factory()->make();
+    $user->establishment_id = $establishment->id;
+
+    $reponse = withHeaders([
+        'accept' => 'application/json',
+        'Authorization' => 'Bearer ' . $token
+    ])->post('/api/v1/establishments/' . $establishment->id .'/users', $user->toArray());
+
+    $reponse->assertForbidden();
+});
+
+
+test("must create user of establishment", function () {
+    $token = getTokenUserAdminLogged();
+    $establishment = createEstablishment();
+    $repository = new \App\Auth\Repositories\UserRepository();
+    $user = $repository->getModel()->factory()->make();
+    $user->establishment_id = $establishment->id;
+
+    $reponse = withHeaders([
+        'accept' => 'application/json',
+        'Authorization' => 'Bearer ' . $token
+    ])->post('/api/v1/establishments/' . $establishment->id .'/users', $user->toArray());
+
+    $reponse->assertCreated();
+});

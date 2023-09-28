@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Establishments\Models\Establishment;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Model>
@@ -24,10 +25,12 @@ class EstablishmentFactory extends Factory
      */
     public function definition(): array
     {
+        $name = fake()->company();
+        $menuCode = Str::slug($name, '-');
         return [
-            'name' => fake()->company(),
+            'name' => $name,
             'description' => fake()->text(),
-            'menu_code' => fake()->slug()
+            'menu_code' => $menuCode
         ];
     }
 }
