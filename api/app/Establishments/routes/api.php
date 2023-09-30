@@ -9,4 +9,6 @@ Route::middleware(['auth-api'])
        Route::apiResource('establishments', EstablishmentController::class);
        Route::post('establishments/{establishment_id}/users', [EstablishmentController::class, 'createUser']);
        Route::get('establishments/{establishment_id}/users', [EstablishmentController::class, 'getUsers']);
+       Route::patch('establishments/{establishment_id}/users/{user_id}', [EstablishmentController::class, 'updateUser']);
+       Route::delete('establishments/{establishment_id}/users/{user_id}', [EstablishmentController::class, 'deleteUser']);
     });

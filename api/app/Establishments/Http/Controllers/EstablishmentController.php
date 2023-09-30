@@ -6,6 +6,7 @@ use App\Auth\Http\Resources\User;
 use App\Establishments\Http\Requests\CreateEstablishmentRequest;
 use App\Establishments\Http\Requests\CreateUserRequest;
 use App\Establishments\Http\Requests\UpdateEstablishmentRequest;
+use App\Establishments\Http\Requests\UpdateUserRequest;
 use App\Establishments\Http\Requests\UserIsAdminRequest;
 use App\Establishments\Http\Resources\Establishment;
 use App\Establishments\Services\EstablishmentService;
@@ -121,5 +122,43 @@ class EstablishmentController extends BaseController
         $users = $this->service->getUsers(establishmentId: $establishmentId);
 
         return User::collection($users);
+    }
+
+    public function updateUser(UpdateUserRequest $request, string $establishmentId, $userId)
+    {
+        try {
+            $userUpdated = $this->service->updateUser(establishmentId: $establishmentId, userId: $userId, data: $request->validated());
+        } catch(Throwable $e) {
+            Log::error($e->getMessage());
+        }
+
+        if (!$userUpdated) {
+            return response()->json([
+                'message' => __('establishments.cold_not_update_user')
+            ], 400);
+        }
+
+        return response()->json([
+            'message' => __('establishments.user_updated')
+        ], 200);
+    }
+
+    public function deleteUser(UserIsAdminRequest $request, string $establishmentId, $userId)
+    {
+        try {
+            $userDeleted = $this->service->deleteUser(establishmentId: $establishmentId, userId: $userId);
+        } catch(Throwable $e) {
+            Log::error($e->getMessage());
+        }
+
+        if (!$userDeleted) {
+            return response()->json([
+                'message' => __('establishments.cold_not_delete_user')
+            ], 400);
+        }
+
+        return response()->json([
+            'message' => __('establishments.user_deleted')
+        ], 200);
     }
 }

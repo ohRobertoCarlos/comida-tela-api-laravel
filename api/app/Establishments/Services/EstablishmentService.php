@@ -97,4 +97,14 @@ class EstablishmentService
     {
         return $this->repository->getUsers(establishmentId: $establishmentId);
     }
+
+    public function updateUser(string $establishmentId, $userId, array $data) : bool
+    {
+        return $this->repository->updateUser(establishmentId: $establishmentId, userId: $userId, data: $data);
+    }
+
+    public function deleteUser(string $establishmentId, $userId) : bool
+    {
+        return $this->repository->deleteUser(establishmentId: $establishmentId, userId: $userId);
+    }
 }

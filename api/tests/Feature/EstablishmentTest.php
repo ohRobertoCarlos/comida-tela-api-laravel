@@ -165,3 +165,67 @@ test("must create user of establishment", function () {
 
     $reponse->assertCreated();
 });
+
+test("must not update user of establishment", function () {
+    $token = getTokenUserLogged();
+    $establishment = createEstablishment();
+    $repository = new \App\Auth\Repositories\UserRepository();
+    $user = $repository->getModel()->factory()->create(['establishment_id' => $establishment->id]);
+
+    $user->name = 'new name';
+    $user->email = 'newname@email.com';
+    $body = $user->toArray();
+
+    $reponse = withHeaders([
+        'accept' => 'application/json',
+        'Authorization' => 'Bearer ' . $token
+    ])->patch('/api/v1/establishments/' . $establishment->id .'/users/' . $user->id, $body);
+
+    $reponse->assertForbidden();
+});
+
+test("must update user of establishment", function () {
+    $token = getTokenUserAdminLogged();
+    $establishment = createEstablishment();
+    $repository = new \App\Auth\Repositories\UserRepository();
+    $user = $repository->getModel()->factory()->create(['establishment_id' => $establishment->id]);
+
+    $user->name = 'new name';
+    $user->email = 'newname@email.com';
+    $body = $user->toArray();
+
+    $reponse = withHeaders([
+        'accept' => 'application/json',
+        'Authorization' => 'Bearer ' . $token
+    ])->patch('/api/v1/establishments/' . $establishment->id .'/users/' . $user->id, $body);
+
+    $reponse->assertOk();
+});
+
+test("must not delete user of establishment", function () {
+    $token = getTokenUserLogged();
+    $establishment = createEstablishment();
+    $repository = new \App\Auth\Repositories\UserRepository();
+    $user = $repository->getModel()->factory()->create(['establishment_id' => $establishment->id]);
+
+    $reponse = withHeaders([
+        'accept' => 'application/json',
+        'Authorization' => 'Bearer ' . $token
+    ])->delete('/api/v1/establishments/' . $establishment->id .'/users/' . $user->id);
+
+    $reponse->assertForbidden();
+});
+
+test("must delete user of establishment", function () {
+    $token = getTokenUserAdminLogged();
+    $establishment = createEstablishment();
+    $repository = new \App\Auth\Repositories\UserRepository();
+    $user = $repository->getModel()->factory()->create(['establishment_id' => $establishment->id]);
+
+    $reponse = withHeaders([
+        'accept' => 'application/json',
+        'Authorization' => 'Bearer ' . $token
+    ])->delete('/api/v1/establishments/' . $establishment->id .'/users/' . $user->id);
+
+    $reponse->assertOk();
+});

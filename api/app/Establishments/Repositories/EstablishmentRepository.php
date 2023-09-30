@@ -59,12 +59,12 @@ class EstablishmentRepository extends BaseRepository
                 throw new \Exception('Establishment not found');
             }
         } catch (\Throwable $e) {
-            throw new \Exception('Establishment not found');
+            throw $e;
         }
 
         $data['establishment_id'] = $establishment->id;
 
-        return $this->getUserRepository()->create($data);
+        return $this->getUserRepository()->create(data: $data);
     }
 
     private function getUserRepository() : BaseRepository|UserRepository
@@ -75,5 +75,43 @@ class EstablishmentRepository extends BaseRepository
     public function getUsers(string $establishmentId) : Collection
     {
         return $this->getUserRepository()->getAllByEstablishmentId(establishmentId: $establishmentId);
+    }
+
+    public function updateUser(string $establishmentId, $userId, array $data) : bool
+    {
+        try {
+            $establishment = $this->findById($establishmentId);
+            if (empty($establishment)) {
+                throw new \Exception('Establishment not found');
+            }
+
+            $user = $this->getUserRepository()->findById($userId);
+            if (empty($user)) {
+                throw new \Exception('User not found');
+            }
+        } catch (\Throwable $e) {
+            throw $e;
+        }
+
+        return $this->getUserRepository()->update(id: $user->id, data: $data);
+    }
+
+    public function deleteUser(string $establishmentId, $userId) : bool
+    {
+        try {
+            $establishment = $this->findById($establishmentId);
+            if (empty($establishment)) {
+                throw new \Exception('Establishment not found');
+            }
+
+            $user = $this->getUserRepository()->findById($userId);
+            if (empty($user)) {
+                throw new \Exception('User not found');
+            }
+        } catch (\Throwable $e) {
+            throw $e;
+        }
+
+        return $this->getUserRepository()->delete(id: $user->id);
     }
 }

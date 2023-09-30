@@ -20,7 +20,7 @@ class AuthController extends BaseController
     /**
     * @unauthenticated
     */
-    public function login(LoginRequest $request) : JwtToken
+    public function login(LoginRequest $request) : JwtToken|JsonResponse
     {
         $credentials = $request->validated();
 
