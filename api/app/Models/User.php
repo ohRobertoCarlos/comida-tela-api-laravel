@@ -33,7 +33,8 @@ class User extends BaseModel implements
         'name',
         'email',
         'password',
-        'establishment_id'
+        'establishment_id',
+        'email_verified_at'
     ];
 
     /**
