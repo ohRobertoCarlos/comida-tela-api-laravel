@@ -13,7 +13,8 @@ class CreateUserRequest extends UserIsAdminRequest
     {
         return [
             'name' => 'required|string|min:2',
-            'email' => 'required|string|email'
+            'email' => 'required|string|email',
+            'password' => ['required','confirmed','regex:/^(?=.*\d)(?=.*\W)[\da-zA-Z\W]{6,}$/'],
         ];
     }
 }

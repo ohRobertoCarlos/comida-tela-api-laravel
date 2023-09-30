@@ -135,14 +135,17 @@ test("must not create user of establishment", function () {
     $user = $repository->getModel()->factory()->make();
     $user->establishment_id = $establishment->id;
 
+    $body = $user->toArray();
+    $body['password'] = '$passwOrd494';
+    $body['password_confirmation'] = '$passwOrd494';
+
     $reponse = withHeaders([
         'accept' => 'application/json',
         'Authorization' => 'Bearer ' . $token
-    ])->post('/api/v1/establishments/' . $establishment->id .'/users', $user->toArray());
+    ])->post('/api/v1/establishments/' . $establishment->id .'/users', $body);
 
     $reponse->assertForbidden();
 });
-
 
 test("must create user of establishment", function () {
     $token = getTokenUserAdminLogged();
@@ -151,10 +154,14 @@ test("must create user of establishment", function () {
     $user = $repository->getModel()->factory()->make();
     $user->establishment_id = $establishment->id;
 
+    $body = $user->toArray();
+    $body['password'] = '$passwOrd494';
+    $body['password_confirmation'] = '$passwOrd494';
+
     $reponse = withHeaders([
         'accept' => 'application/json',
         'Authorization' => 'Bearer ' . $token
-    ])->post('/api/v1/establishments/' . $establishment->id .'/users', $user->toArray());
+    ])->post('/api/v1/establishments/' . $establishment->id .'/users', $body);
 
     $reponse->assertCreated();
 });
