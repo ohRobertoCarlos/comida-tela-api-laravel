@@ -22,13 +22,15 @@ Route::middleware(['api'])
         Route::post('/register', [AuthController::class, 'register']);
         Route::post('/login', [AuthController::class, 'login']);
 
-        Route::get('/email/verify', function () {
-            return view('auth.verify-email');
-        })
-            ->middleware('auth')
-            ->name('verification.notice');
-
         Route::get('/email/verify/{id}/{hash}', [\App\Auth\Http\Controllers\VerifyEmailController::class, 'verifyEmail'])
             ->middleware(['signed'])
             ->name('verification.verify');
+
+        Route::post('/forgot-password', [AuthController::class, 'forgotPassword'])
+            ->middleware('guest')
+            ->name('password.email');
+
+        Route::post('/reset-password', [AuthController::class, 'resetPassword'])
+            ->middleware('guest')
+            ->name('password.update');
     });

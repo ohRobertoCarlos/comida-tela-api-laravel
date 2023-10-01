@@ -7,8 +7,12 @@ use App\Auth\Http\Resources\JwtToken;
 use App\Auth\Http\Resources\User;
 use App\Auth\Services\AuthService;
 use App\Http\Controllers\BaseController;
+use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Password;
+use Illuminate\Support\Str;
 
 class AuthController extends BaseController
 {
@@ -69,5 +73,54 @@ class AuthController extends BaseController
     public function refresh() : JwtToken
     {
         return new JwtToken(auth()->refresh());
+    }
+
+    /**
+     * @unauthenticated
+     */
+    public function forgotPassword(Request $request) : JsonResponse
+    {
+        $request->validate(['email' => 'required|email']);
+
+        $status = Password::sendResetLink(
+            $request->only('email')
+        );
+
+        if ($status !== Password::RESET_LINK_SENT) {
+            return response()->json(['status' => __($status)], 400);
+        }
+
+        return response()->json(['status' => __($status)]);
+    }
+
+    /**
+     * @unauthenticated
+     */
+    public function resetPassword(Request $request) : JsonResponse
+    {
+        $request->validate([
+            'token' => 'required',
+            'email' => 'required|email',
+            'password' => 'required|regex:/^(?=.*\d)(?=.*\W)[\da-zA-Z\W]{6,}$/|confirmed',
+        ]);
+
+        $status = Password::reset(
+            $request->only('email', 'password', 'password_confirmation', 'token'),
+            function (\App\Models\User $user, string $password) {
+                $user->forceFill([
+                    'password' => Hash::make($password)
+                ])->setRememberToken(Str::random(60));
+
+                $user->save();
+
+                event(new PasswordReset($user));
+            }
+        );
+
+        if ($status !== Password::PASSWORD_RESET) {
+            return response()->json(['status' => __($status)], 400);
+        }
+
+        return response()->json(['status' => __($status)]);
     }
 }
