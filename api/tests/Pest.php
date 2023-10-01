@@ -39,3 +39,17 @@ function createEstablishment() : \App\Models\BaseModel
         ->factory()
         ->create();
 }
+
+function createUser() : \App\Models\User
+{
+    $repository = new \App\Auth\Repositories\UserRepository();
+    return $repository->getModel()->factory()->create();
+}
+
+function buildWelcomeEmail($user)
+{
+    $token = \Illuminate\Support\Facades\Password::createToken($user);
+    $resetUrl = env('APP_CLIENT_URL') . '/reset-password?token='.$token;
+
+    return new \App\Auth\Mail\Welcome($user, $resetUrl);
+}
