@@ -32,6 +32,14 @@ return [
             'create_password_text_button' => 'Criar senha',
             'thanks' => 'Obrigado',
         ],
+        'verify_email' => [
+            'verify_email_user' => 'Verifique seu e-mail',
+            'greeting' => 'Olá :name,',
+            'message' => 'Você pode verificar seu e-mail clicando no botão abaixo:',
+            'verify_email_text_button' => 'Verificar e-mail',
+            'thanks' => 'Obrigado',
+            'alert_no_create_account_message' => 'Se você não criou uma conta, nenhuma ação é requerida.'
+        ],
         'welcome_user_subject' => 'Seja bem vindo!',
     ],
 ];

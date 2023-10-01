@@ -32,6 +32,14 @@ return [
             'create_password_text_button' => 'Create Password',
             'thanks' => 'Thanks',
         ],
+        'verify_email' => [
+            'verify_email_user' => 'Verify your e-mail',
+            'greeting' => 'Hello :name,',
+            'message' => 'You can check your email by clicking the button below:',
+            'verify_email_text_button' => 'Verify e-mail',
+            'thanks' => 'Thanks',
+            'alert_no_create_account_message' => 'If you did not create an account, no further action is required.'
+        ],
         'welcome_user_subject' => 'Welcome!',
     ],
 ];
