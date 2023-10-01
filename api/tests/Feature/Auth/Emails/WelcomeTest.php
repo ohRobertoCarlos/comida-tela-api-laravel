@@ -21,7 +21,7 @@ test('Email body must have button create password', function () {
     $user = createUser();
     $mailable = buildWelcomeEmail($user);
 
-    $mailable->assertSeeInHtml('Create password');
+    $mailable->assertSeeInHtml(__('auth.email.welcome.create_password_text_button'));
 });
 
 test('Email must have the correct sender address', function () {

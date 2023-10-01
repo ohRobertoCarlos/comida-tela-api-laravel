@@ -1,14 +1,12 @@
 <x-mail::message>
-# Order Shipped
-
-Hello <strong>{{ $user->name }}</strong>,<br><br>
-Welcome on Comida tela<br>
-Create your password on link below:
+## {{ __('auth.email.welcome.greeting', ['name' => $user->name]), }}<br><br>
+{{ __('auth.email.welcome.greetings', ['name' => env('APP_NAME')]) }}<br>
+{{ __('auth.email.welcome.create_password_message') }}
 
 <x-mail::button :url="$url">
-    Create password
+    {{ __('auth.email.welcome.create_password_text_button') }}
 </x-mail::button>
 
-Thanks,<br>
+{{ __('auth.email.welcome.thanks') }},<br>
 {{ config('app.name') }}
 </x-mail::message>

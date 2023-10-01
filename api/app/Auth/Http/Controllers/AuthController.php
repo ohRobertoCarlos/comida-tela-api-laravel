@@ -67,7 +67,7 @@ class AuthController extends BaseController
 
         return response()->json(['message' => __('auth.successfully_logged_out')]);
     }
-    
+
     public function refresh() : JwtToken
     {
         return new JwtToken(auth()->refresh());

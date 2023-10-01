@@ -25,6 +25,13 @@ return [
     'resend_email_verification' => 'E-mail de verificação enviado.',
     'user_already_verified' => 'O usuário já está com o e-mail verificado.',
     'email' => [
+        'welcome' => [
+            'greeting' => 'Olá :name,',
+            'greetings' => 'Seja bem-vendo ao :name.',
+            'create_password_message' => 'Você pode criar sua senha clicando no botão abaixo:',
+            'create_password_text_button' => 'Criar senha',
+            'thanks' => 'Obrigado',
+        ],
         'welcome_user_subject' => 'Seja bem vindo!',
     ],
 ];
