@@ -23,5 +23,8 @@ return [
     'invalid_email' => 'E-mail inválido',
     'user_not_found' => 'Usuário não encontrado.',
     'resend_email_verification' => 'E-mail de verificação enviado.',
-    'user_already_verified' => 'O usuário já está com o e-mail verificado.'
+    'user_already_verified' => 'O usuário já está com o e-mail verificado.',
+    'email' => [
+        'welcome_user_subject' => 'Seja bem vindo!',
+    ],
 ];

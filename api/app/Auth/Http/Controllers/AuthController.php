@@ -8,6 +8,7 @@ use App\Auth\Http\Resources\User;
 use App\Auth\Services\AuthService;
 use App\Http\Controllers\BaseController;
 use Illuminate\Auth\Events\PasswordReset;
+use Illuminate\Auth\Events\Verified;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -112,6 +113,10 @@ class AuthController extends BaseController
                 ])->setRememberToken(Str::random(60));
 
                 $user->save();
+
+                if (!$user->hasVerifiedEmail()) {
+                    $user->markEmailAsVerified();
+                }
 
                 event(new PasswordReset($user));
             }

@@ -13,6 +13,7 @@ class AuthProvider extends ServiceProvider
      */
     public function register(): void
     {
+        $this->loadViewsFrom(__DIR__ . '/../resources/views', 'auth');
         $this->loadRoutesFrom(__DIR__ . '/../routes/api.php');
         $this->app->register(EventServiceProvider::class);
     }

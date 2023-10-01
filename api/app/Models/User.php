@@ -2,12 +2,16 @@
 
 namespace App\Models;
 
+use App\Auth\Mail\Welcome;
 use Illuminate\Contracts\Auth\MustVerifyEmail as MustVerifyEmailContract;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Password;
 use Laravel\Sanctum\HasApiTokens;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Auth\Authenticatable;
@@ -75,5 +79,12 @@ class User extends BaseModel implements
     public function getJWTCustomClaims()
     {
         return [];
+    }
+
+    public function sendWelcomeEmail()
+    {
+        $token = Password::createToken($this);
+        $resetUrl = env('APP_CLIENT_URL') . '/reset-password?token='.$token;
+        Mail::to($this)->send(new Welcome($this, $resetUrl));
     }
 }

@@ -10,6 +10,7 @@ use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
@@ -87,10 +88,9 @@ class EstablishmentService
 
     public function createUser(string $establishmentId, array $data) : BaseModel
     {
-        $data['password'] = Hash::make($data['password']);
         $user = $this->repository->createUser(establishmentId: $establishmentId, data: $data);
 
-        event(new Registered($user));
+        $user->sendWelcomeEmail();
 
         return $user;
     }
