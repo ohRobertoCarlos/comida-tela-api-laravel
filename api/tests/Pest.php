@@ -1,5 +1,9 @@
 <?php
 
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\URL;
+
 uses(\Tests\TestCase::class)->in('Feature');
 
 function getTokenUserLogged() : string
@@ -52,4 +56,21 @@ function buildWelcomeEmail($user)
     $resetUrl = env('APP_CLIENT_URL') . '/reset-password?token='.$token;
 
     return new \App\Auth\Mail\Welcome($user, $resetUrl);
+}
+
+function buildVerifyEmail($user)
+{
+    return new \App\Auth\Mail\VerifyEmail($user, buildUrlVerifyEmail($user));
+}
+
+function buildUrlVerifyEmail($user)
+{
+    return URL::temporarySignedRoute(
+        'verification.verify',
+        Carbon::now()->addMinutes(Config::get('auth.verification.expire', 60)),
+        [
+            'id' => $user->getKey(),
+            'hash' => sha1($user->getEmailForVerification()),
+        ]
+    );
 }

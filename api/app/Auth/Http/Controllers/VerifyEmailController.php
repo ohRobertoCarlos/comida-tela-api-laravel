@@ -61,6 +61,12 @@ class VerifyEmailController extends BaseController
             ], 404);
         }
 
+        if ($user->hasVerifiedEmail()) {
+            return response()->json([
+                'message' => __('auth.user_already_verified')
+            ], 400);
+        }
+
         $user->sendEmailVerificationNotification();
 
         return response()->json([
