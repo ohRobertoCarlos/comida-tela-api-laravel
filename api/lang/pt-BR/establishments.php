@@ -12,5 +12,6 @@ return [
     'user_updated' => 'Usuário atualizado com sucesso.',
     'cold_not_update_user' => 'Não foi possível atualizar o usuário.',
     'user_deleted' => 'Usuário deletado com sucesso.',
-    'cold_not_delete_user' => 'Não foi possível deletar o usuário.'
+    'cold_not_delete_user' => 'Não foi possível deletar o usuário.',
+    'user_establishment_not_found' => 'Usuário do estabelecimento não encontrado.'
 ];

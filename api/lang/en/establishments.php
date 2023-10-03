@@ -12,5 +12,6 @@ return [
     'user_updated' => 'User updated successfully.',
     'cold_not_update_user' => 'Cold not update an user.',
     'user_deleted' => 'User deleted successfully.',
-    'cold_not_delete_user' => 'Cold not delete an user.'
+    'cold_not_delete_user' => 'Cold not delete an user.',
+    'user_establishment_not_found' => 'User of establishment not found.'
 ];

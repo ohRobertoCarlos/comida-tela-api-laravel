@@ -79,24 +79,20 @@ class EstablishmentRepository extends BaseRepository
 
     public function updateUser(string $establishmentId, $userId, array $data) : bool
     {
-        try {
-            $establishment = $this->findById($establishmentId);
-            if (empty($establishment)) {
-                throw new \Exception('Establishment not found');
-            }
-
-            $user = $this->getUserRepository()->findById($userId);
-            if (empty($user)) {
-                throw new \Exception('User not found');
-            }
-        } catch (\Throwable $e) {
-            throw $e;
-        }
+        $user = $this->getUser(establishmentId: $establishmentId, userId: $userId);
 
         return $this->getUserRepository()->update(id: $user->id, data: $data);
     }
 
     public function deleteUser(string $establishmentId, $userId) : bool
+    {
+        $user = $this->getUser(establishmentId: $establishmentId, userId: $userId);
+
+        return $this->getUserRepository()->delete(id: $user->id);
+    }
+
+
+    public function getUser(string $establishmentId, $userId) : BaseModel
     {
         try {
             $establishment = $this->findById($establishmentId);
@@ -105,13 +101,14 @@ class EstablishmentRepository extends BaseRepository
             }
 
             $user = $this->getUserRepository()->findById($userId);
-            if (empty($user)) {
+            if (empty($user) || $user->establishment_id !== $establishment->id) {
                 throw new \Exception('User not found');
             }
+
         } catch (\Throwable $e) {
             throw $e;
         }
 
-        return $this->getUserRepository()->delete(id: $user->id);
+        return $user;
     }
 }

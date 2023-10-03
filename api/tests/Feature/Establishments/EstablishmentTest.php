@@ -128,6 +128,34 @@ test("must list users of establishment", function () {
     $reponse->assertOk();
 });
 
+test("must not show user of establishment", function () {
+    $token = getTokenUserLogged();
+    $establishment = createEstablishment();
+    $repository = new \App\Auth\Repositories\UserRepository();
+    $user = $repository->getModel()->factory()->create(['establishment_id' => $establishment->id]);
+
+    $reponse = withHeaders([
+        'accept' => 'application/json',
+        'Authorization' => 'Bearer ' . $token
+    ])->get('/api/v1/establishments/' . $establishment->id .'/users/' . $user->id);
+
+    $reponse->assertForbidden();
+});
+
+test("must show user of establishment", function () {
+    $token = getTokenUserAdminLogged();
+    $establishment = createEstablishment();
+    $repository = new \App\Auth\Repositories\UserRepository();
+    $user = $repository->getModel()->factory()->create(['establishment_id' => $establishment->id]);
+
+    $reponse = withHeaders([
+        'accept' => 'application/json',
+        'Authorization' => 'Bearer ' . $token
+    ])->get('/api/v1/establishments/' . $establishment->id .'/users/' . $user->id);
+
+    $reponse->assertJsonFragment(['id' => $user->id]);
+});
+
 test("must not create user of establishment", function () {
     $token = getTokenUserLogged();
     $establishment = createEstablishment();

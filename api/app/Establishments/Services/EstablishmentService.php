@@ -109,4 +109,10 @@ class EstablishmentService
     {
         return $this->repository->deleteUser(establishmentId: $establishmentId, userId: $userId);
     }
+
+
+    public function getUser(string $establishmentId, $userId) : BaseModel
+    {
+        return $this->repository->getUser(establishmentId: $establishmentId, userId: $userId);
+    }
 }
