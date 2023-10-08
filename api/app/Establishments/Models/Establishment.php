@@ -15,6 +15,7 @@ class Establishment extends BaseModel
     public $table = 'establishments';
 
     protected $fillable = [
+        'id',
         'name',
         'description',
         'menu_code',

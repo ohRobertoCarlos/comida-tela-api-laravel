@@ -12,6 +12,7 @@ class CreateEstablishmentRequest extends UserIsAdminRequest
     public function rules(): array
     {
         return [
+            'id' => 'string',
             'name' => 'required|string|min:2',
             'description' => 'string'
         ];

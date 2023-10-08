@@ -12,4 +12,9 @@ class MenuRepository extends BaseRepository
         protected BaseModel $model = new Menu()
     )
     {}
+
+    public function getByEstablismentId(string $establishmentId) : BaseModel
+    {
+        return $this->getModel()->where('establishment_id', $establishmentId)->with('items')->first();
+    }
 }

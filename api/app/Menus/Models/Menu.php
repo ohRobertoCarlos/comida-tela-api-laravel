@@ -2,8 +2,10 @@
 
 namespace App\Menus\Models;
 
+use App\Items\Models\Item;
 use App\Models\BaseModel;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Menu extends BaseModel
@@ -16,4 +18,9 @@ class Menu extends BaseModel
         'establishment_id',
         'qr_code_image_path'
     ];
+
+    public function items() : HasMany
+    {
+        return $this->hasMany(Item::class, 'menu_id', 'id');
+    }
 }

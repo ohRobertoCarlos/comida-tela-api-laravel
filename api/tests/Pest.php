@@ -74,3 +74,14 @@ function buildUrlVerifyEmail($user)
         ]
     );
 }
+
+function getTokenUserEstablishmentLogged(string $establishmentId) : string
+{
+    $repository = new \App\Auth\Repositories\UserRepository();
+    $user = $repository->getModel()->factory()->create(['establishment_id' => $establishmentId]);
+
+    return auth()->attempt([
+        'email' => $user->email,
+        'password' => 'password'
+    ]);
+}
