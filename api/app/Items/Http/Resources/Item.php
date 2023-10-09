@@ -23,6 +23,7 @@ class Item extends JsonResource
             'description' => $this->description,
             'cover_image_location' => $this->cover_image_location,
             'max_price' => $this->max_price,
+            'min_price' => $this->min_price,
             'currency' => $this->currency,
             'portions' => $this->portions,
             'created_at' => $this->created_at,
