@@ -8,10 +8,10 @@ use App\Repositories\BaseRepository;
 
 class MenuRepository extends BaseRepository
 {
-    public function __construct(
-        protected BaseModel $model = new Menu()
-    )
-    {}
+    public function __construct()
+    {
+        $this->model = new Menu();
+    }
 
     public function getByEstablismentId(string $establishmentId) : BaseModel
     {

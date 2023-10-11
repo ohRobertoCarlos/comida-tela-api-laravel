@@ -8,7 +8,10 @@ use Illuminate\Support\Collection;
 
 abstract class BaseRepository implements Repository
 {
-    protected BaseModel $model;
+    public function __construct(
+        protected BaseModel $model
+    )
+    {}
 
     public function getModel() : BaseModel
     {

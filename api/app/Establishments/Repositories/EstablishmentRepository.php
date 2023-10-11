@@ -12,10 +12,10 @@ use Illuminate\Support\Collection;
 
 class EstablishmentRepository extends BaseRepository
 {
-    public function __construct(
-        protected BaseModel $model = new Establishment()
-    )
-    {}
+    public function __construct()
+    {
+        $this->model = new Establishment();
+    }
 
     public function createMenu(BaseModel $establishment, string $qrCodeImagePath) : void
     {

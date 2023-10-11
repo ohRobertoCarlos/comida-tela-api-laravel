@@ -10,10 +10,10 @@ use Illuminate\Support\Collection;
 
 class UserRepository extends BaseRepository implements Repository
 {
-    public function __construct(
-        protected BaseModel $model = new User()
-    )
-    {}
+    public function __construct()
+    {
+        $this->model = new User();
+    }
 
     public function findByEmail(string $email) : BaseModel|null
     {

@@ -14,14 +14,19 @@ use Throwable;
 class ItemService
 {
     public function __construct(
-        private ItemRepository $repository = new ItemRepository()
+        private ItemRepository $repository
     )
     {}
 
     public function create(BaseModel $menu, array $data) : BaseModel
     {
         $data['menu_id'] = $menu->id;
-        return $this->repository->create($data);
+        return $this->repository->create(data: $data);
+    }
+
+    public function update(string $id, array $data) : bool
+    {
+        return $this->repository->update(id: $id, data: $data);
     }
 
     public function storageImageItem(File|UploadedFile $image, BaseModel $menu) : string
@@ -34,5 +39,16 @@ class ItemService
         }
 
         return $path;
+    }
+
+    public function getItem(string $itemId) : BaseModel|null
+    {
+        return $this->repository->findById(id: $itemId);
+    }
+
+    public function sameTitleExists(string $menuId, string $title, string|null $ignoredItemId = null) : bool
+    {
+        return $this->repository
+            ->sameTitleExists(menuId: $menuId, title: $title, ignoredItemId: $ignoredItemId);
     }
 }

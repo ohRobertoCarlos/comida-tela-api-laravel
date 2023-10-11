@@ -14,8 +14,8 @@ use Illuminate\Http\UploadedFile;
 class MenuService
 {
     public function __construct(
-        private Repository|MenuRepository $repository = new MenuRepository(),
-        private ItemService $itemService = new ItemService()
+        private MenuRepository $repository,
+        private ItemService $itemService
     )
     {}
 
@@ -31,28 +31,48 @@ class MenuService
             throw new Exception('menu not found');
         }
 
-        $itemSameTitleExists = $this->getItemRepository()
-            ->sameTitleExists(menu: $menu, title: $data['title']);
+        $itemSameTitleExists = $this->itemService
+            ->sameTitleExists(menuId: $menu->id, title: $data['title']);
         if($itemSameTitleExists) {
             throw new Exception('Already exists item with this title in menu');
         }
 
-        $data['menu_id'] = $menu->id;
         $data['cover_image_location'] = $this->storeImageItem(
             file: $data['cover_image'],
             menu: $menu
         );
 
-        return $this->getItemRepository()->create(data: $data);
-    }
-
-    private function getItemRepository() : ItemRepository
-    {
-        return new ItemRepository();
+        return $this->itemService->create(menu: $menu, data: $data);
     }
 
     private function storeImageItem(File|UploadedFile $file, BaseModel $menu) : string
     {
         return $this->itemService->storageImageItem(image: $file, menu: $menu);
+    }
+
+    public function updateItem(string $itemId, array $data) : bool
+    {
+        $item = $this->itemService->getItem(itemId: $itemId);
+        if (empty($item)) {
+            throw new Exception('item not found');
+        }
+
+        if (!empty($data['title'])) {
+            $itemSameTitleExists = $this->itemService
+            ->sameTitleExists(menuId: $item->menu_id, title: $data['title'], ignoredItemId: $item->id);
+
+            if($itemSameTitleExists) {
+                throw new Exception('Already exists item with this title in menu');
+            }
+        }
+
+        if (!empty($data['cover_image'])) {
+            $data['cover_image_location'] = $this->storeImageItem(
+                file: $data['cover_image'],
+                menu: $this->getMenu($item->menu_id)
+            );
+        }
+
+        return $this->itemService->update(id: $item->id, data: $data);
     }
 }

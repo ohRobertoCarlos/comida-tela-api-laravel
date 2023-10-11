@@ -9,4 +9,5 @@ Route::middleware(['auth-api'])
        Route::get('establishments/{establishment_id}/menu', [MenuController::class, 'show']);
 
        Route::post('establishments/{establishment_id}/menu/items', [MenuController::class, 'addItem']);
+       Route::patch('establishments/{establishment_id}/menu/items/{item_id}', [MenuController::class, 'updateItem']);
     });

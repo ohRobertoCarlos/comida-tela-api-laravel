@@ -4,6 +4,7 @@ namespace App\Menus\Http\Controllers;
 
 use App\Http\Controllers\BaseController;
 use App\Items\Http\Requests\CreateItemRequest;
+use App\Items\Http\Requests\UpdateItemRequest;
 use App\Items\Http\Resources\Item;
 use App\Menus\Http\Requests\UserIsOfEstablismentRequest;
 use App\Menus\Http\Resources\Menu;
@@ -49,5 +50,28 @@ class MenuController extends BaseController
         }
 
         return new Item($item);
+    }
+
+    public function updateItem(UpdateItemRequest $request,string $establishmentId, string $itemId) : JsonResponse
+    {
+        try {
+            $itemUpdated = $this->service->updateItem(
+                itemId : $itemId,
+                data: $request->validated()
+            );
+        } catch(Throwable $e) {
+            $itemUpdated = false;
+            Log::error($e->getMessage());
+        }
+
+        if (!$itemUpdated) {
+            return response()->json([
+                'message' => __('menus.cold_not_update_item')
+            ], 400);
+        }
+
+        return response()->json([
+            'message' => __('menus.update_item_successfully')
+        ]);
     }
 }

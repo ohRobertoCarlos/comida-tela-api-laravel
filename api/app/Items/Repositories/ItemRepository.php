@@ -9,15 +9,15 @@ use App\Repositories\BaseRepository;
 
 class ItemRepository extends BaseRepository
 {
-    public function __construct(
-        protected BaseModel $model = new Item()
-    )
-    {}
+    public function __construct()
+    {
+        $this->model = new Item();
+    }
 
-    public function sameTitleExists(Menu $menu, string $title, string|null $ignoredItemId = null) : bool
+    public function sameTitleExists(string $menuId, string $title, string|null $ignoredItemId = null) : bool
     {
         return $this->getModel()
-        ->where('menu_id', $menu->id)
+        ->where('menu_id', $menuId)
         ->where('title', $title)
         ->where('id', '<>', $ignoredItemId)
         ->exists();

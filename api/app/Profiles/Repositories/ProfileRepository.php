@@ -8,8 +8,8 @@ use App\Repositories\BaseRepository;
 
 class ProfileRepository extends BaseRepository
 {
-    public function __construct(
-        protected BaseModel $model = new Profile()
-    )
-    {}
+    public function __construct()
+    {
+        $this->model = new Profile();
+    }
 }
