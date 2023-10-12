@@ -17,7 +17,7 @@ use Illuminate\Support\Str;
 class EstablishmentService
 {
     public function __construct(
-        private Repository $repository = new EstablishmentRepository()
+        private EstablishmentRepository $repository
     )
     {}
 
