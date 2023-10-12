@@ -8,7 +8,7 @@ test('should not show a menu of establisment', function() {
     $token = getTokenUserAdminLogged();
     $establishment = makeEstablishment();
     $establishment->id = fake()->uuid();
-    \Illuminate\Support\Facades\Storage::fake('test-disk');
+    \Illuminate\Support\Facades\Storage::fake('test-disk-public');
 
     $reponse = withHeaders([
         'accept' => 'application/json',
@@ -29,7 +29,7 @@ test('should show a menu of establisment', function() {
     $token = getTokenUserAdminLogged();
     $establishment = makeEstablishment();
     $establishment->id = fake()->uuid();
-    \Illuminate\Support\Facades\Storage::fake('test-disk');
+    \Illuminate\Support\Facades\Storage::fake('test-disk-public');
 
     $reponse = withHeaders([
         'accept' => 'application/json',

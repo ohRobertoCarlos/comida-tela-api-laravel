@@ -79,7 +79,7 @@ class EstablishmentService
         $base64 = str_replace(' ', '+', $base64);
 
         $path = 'menus/qrcodes/' . $establishment->id . '.png';
-        if (!Storage::put($path, base64_decode($base64))) {
+        if (!Storage::disk(env('PUBLIC_FILESYSTEM_DISK', 'public'))->put($path, base64_decode($base64))) {
             throw new \Exception('Unable to save file');
         }
 

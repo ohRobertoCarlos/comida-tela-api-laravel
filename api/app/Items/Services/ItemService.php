@@ -37,7 +37,7 @@ class ItemService
     public function storageImageItem(File|UploadedFile $image, BaseModel $menu) : string
     {
         try {
-            $path = Storage::putFile('menus/' . $menu->id, $image);
+            $path = Storage::disk(env('PUBLIC_FILESYSTEM_DISK', 'public'))->put('menus/' . $menu->id, $image);
         } catch(Throwable $e) {
             Log::error($e->getMessage());
             throw new \Exception('Unable to save image');

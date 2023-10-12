@@ -3,6 +3,7 @@
 namespace App\Menus\Http\Resources;
 
 use App\Items\Http\Resources\Item;
+use App\Shared\Services\StorageService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -17,7 +18,7 @@ class Menu extends JsonResource
     {
         return [
             'id' => $this->id,
-            'qr_code_image_path' => $this->qr_code_image_path,
+            'qr_code_image_path_url' => StorageService::getUrlPublicFile(publicFilePath: $this->qr_code_image_path),
             'establishment_id' => $this->establishment_id,
             'items' => Item::collection($this->items),
             'created_at' => $this->created_at,

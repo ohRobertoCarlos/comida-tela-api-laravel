@@ -2,6 +2,7 @@
 
 namespace App\Items\Http\Resources;
 
+use App\Shared\Services\StorageService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -21,7 +22,7 @@ class Item extends JsonResource
             'not_likes' => $this->not_likes,
             'title' => $this->title,
             'description' => $this->description,
-            'cover_image_location' => $this->cover_image_location,
+            'cover_image_location_url' => StorageService::getUrlPublicFile(publicFilePath: $this->cover_image_location),
             'max_price' => $this->max_price,
             'min_price' => $this->min_price,
             'currency' => $this->currency,

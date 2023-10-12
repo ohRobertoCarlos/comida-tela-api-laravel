@@ -27,5 +27,6 @@
         <env name="SESSION_DRIVER" value="array"/>
         <env name="TELESCOPE_ENABLED" value="false"/>
         <env name="FILESYSTEM_DISK" value="test-disk"/>
+        <env name="PUBLIC_FILESYSTEM_DISK" value="test-disk-public"/>
     </php>
 </phpunit>
