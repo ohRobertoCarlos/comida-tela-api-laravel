@@ -25,15 +25,15 @@ abstract class BaseRepository implements Repository
 
     public function update(string $id, array $data) : bool
     {
-        return $this->findById($id)->update($data);
+        return (bool) $this->findById($id)?->update($data);
     }
 
     public function delete(string $id): bool
     {
-        return $this->findById($id)->delete();
+        return (bool) $this->findById($id)?->delete();
     }
 
-    public function findById(string $id): BaseModel
+    public function findById(string $id): BaseModel|null
     {
         return $this->getModel()->find($id);
     }

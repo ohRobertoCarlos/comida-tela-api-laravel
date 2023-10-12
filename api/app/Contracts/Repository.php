@@ -12,5 +12,5 @@ interface Repository
     public function delete(string $id) : bool;
     public function all() : Collection;
 
-    public function findById(string $id) : BaseModel;
+    public function findById(string $id) : BaseModel|null;
 }
