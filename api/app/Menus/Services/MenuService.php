@@ -75,4 +75,9 @@ class MenuService
 
         return $this->itemService->update(id: $item->id, data: $data);
     }
+
+    public function deleteItem(string $itemId) : bool
+    {
+        return $this->itemService->delete(id: $itemId);
+    }
 }

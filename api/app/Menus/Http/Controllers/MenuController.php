@@ -52,7 +52,7 @@ class MenuController extends BaseController
         return new Item($item);
     }
 
-    public function updateItem(UpdateItemRequest $request,string $establishmentId, string $itemId) : JsonResponse
+    public function updateItem(UpdateItemRequest $request, string $establishmentId, string $itemId) : JsonResponse
     {
         try {
             $itemUpdated = $this->service->updateItem(
@@ -72,6 +72,26 @@ class MenuController extends BaseController
 
         return response()->json([
             'message' => __('menus.update_item_successfully')
+        ]);
+    }
+
+    public function deleteItem(UserIsOfEstablismentRequest $request, string $establishmentId, string $itemId) : JsonResponse
+    {
+        try {
+            $itemDeleted = $this->service->deleteItem(itemId: $itemId);
+        } catch(Throwable $e) {
+            Log::error($e->getMessage());
+            $itemDeleted = false;
+        }
+
+        if(!$itemDeleted) {
+            return response()->json([
+                'message' => __('menus.cold_not_delete_item')
+            ], 400);
+        }
+
+        return response()->json([
+            'message' => __('menus.item_deleted_successfully')
         ]);
     }
 }

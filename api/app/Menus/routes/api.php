@@ -10,4 +10,5 @@ Route::middleware(['auth-api'])
 
        Route::post('establishments/{establishment_id}/menu/items', [MenuController::class, 'addItem']);
        Route::patch('establishments/{establishment_id}/menu/items/{item_id}', [MenuController::class, 'updateItem']);
+       Route::delete('establishments/{establishment_id}/menu/items/{item_id}', [MenuController::class, 'deleteItem']);
     });

@@ -29,6 +29,11 @@ class ItemService
         return $this->repository->update(id: $id, data: $data);
     }
 
+    public function delete(string $id) : bool
+    {
+        return $this->repository->delete(id: $id);
+    }
+
     public function storageImageItem(File|UploadedFile $image, BaseModel $menu) : string
     {
         try {
