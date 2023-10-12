@@ -2,10 +2,12 @@
 
 namespace App\Establishments\Models;
 
+use App\Menus\Models\Menu;
 use App\Models\BaseModel;
 use Database\Factories\EstablishmentFactory;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Establishment extends BaseModel
@@ -27,6 +29,11 @@ class Establishment extends BaseModel
     protected static function newFactory(): EstablishmentFactory
     {
         return EstablishmentFactory::new();
+    }
+
+    public function menu() : HasOne
+    {
+        return $this->hasOne(Menu::class);
     }
 
 }

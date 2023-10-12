@@ -3,12 +3,14 @@
 namespace App\Items\Models;
 
 use App\Models\BaseModel;
+use Database\Factories\ItemFactory;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Item extends BaseModel
 {
-    use SoftDeletes, HasUuids;
+    use SoftDeletes, HasUuids, HasFactory;
 
     public $table = 'items';
 
@@ -25,4 +27,12 @@ class Item extends BaseModel
         'currency',
         'portions',
     ];
+
+    /**
+     * Create a new factory instance for the model.
+     */
+    protected static function newFactory(): ItemFactory
+    {
+        return ItemFactory::new();
+    }
 }

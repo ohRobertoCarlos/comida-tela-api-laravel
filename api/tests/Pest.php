@@ -3,6 +3,9 @@
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\URL;
+use Illuminate\Testing\TestResponse;
+
+use function Pest\Laravel\withHeaders;
 
 uses(\Tests\TestCase::class)->in('Feature');
 
@@ -84,4 +87,33 @@ function getTokenUserEstablishmentLogged(string $establishmentId) : string
         'email' => $user->email,
         'password' => 'password'
     ]);
+}
+
+function makeItemMenu(string $menuId) : \App\Models\BaseModel
+{
+    return (new App\Items\Repositories\ItemRepository())
+        ->getModel()
+        ->factory()
+        ->make(['menu_id' => $menuId]);
+}
+
+function createItemMenu(array $data) : \App\Models\BaseModel
+{
+    return (new App\Items\Repositories\ItemRepository())
+        ->getModel()
+        ->factory()
+        ->create($data);
+}
+
+function createEstablishmentWithMenu() : TestResponse
+{
+    $token = getTokenUserAdminLogged();
+    $establishment = makeEstablishment();
+    $establishment->id = fake()->uuid();
+    \Illuminate\Support\Facades\Storage::fake('test-disk-public');
+
+    return withHeaders([
+        'accept' => 'application/json',
+        'Authorization' => 'Bearer ' . $token
+    ])->postJson('/api/v1/establishments', $establishment->toArray());
 }
