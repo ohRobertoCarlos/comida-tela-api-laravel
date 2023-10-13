@@ -1,2 +1,2 @@
-# comida-tela-api-laravel
-API de cardápio para estabelecimentos alimentícios
+# Comida na Tela API
+Menu API for food establishments
