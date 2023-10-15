@@ -59,6 +59,11 @@ Make sure port 80 or any port used by containers is not being used.
 ./vendor/bin/sail artisan key:generate
 ```
 
+### Run migrations
+```bash
+./vendor/bin/sail artisan migrate
+```
+
 ### To run the tests:
 ```bash
 ./vendor/bin/sail test
