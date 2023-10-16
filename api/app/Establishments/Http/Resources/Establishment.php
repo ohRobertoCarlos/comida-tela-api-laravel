@@ -2,6 +2,7 @@
 
 namespace App\Establishments\Http\Resources;
 
+use App\Menus\Http\Resources\Menu;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -18,7 +19,7 @@ class Establishment extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'description' => $this->description,
-            'menu' => $this->menu,
+            'menu' => new Menu($this->menu),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

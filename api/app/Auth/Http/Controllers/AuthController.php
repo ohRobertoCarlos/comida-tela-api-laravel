@@ -36,26 +36,6 @@ class AuthController extends BaseController
         return new JwtToken($token);
     }
 
-    /**
-    * @unauthenticated
-    */
-    public function register(RegisterUserRequest $request) : User
-    {
-        $userData = $request->validated();
-
-        $userEmailExists = $this->authService->getUserByEmail($userData['email']);
-        if (!empty($userEmailExists)) {
-            abort(403, __('auth.user_email_exists'));
-        }
-
-        $userData['password'] = Hash::make($userData['password']);
-
-        if (!$user = $this->authService->createUser($userData))
-            abort(500, __('auth.not_create_user'));
-
-        return new User($user);
-    }
-
     public function me() : User
     {
         return new User(auth()->user());
