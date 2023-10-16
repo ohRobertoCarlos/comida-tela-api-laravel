@@ -61,8 +61,19 @@ Make sure port 80 or any port used by containers is not being used.
 
 ### Run migrations
 ```bash
-./vendor/bin/sail artisan migrate
+./vendor/bin/sail artisan migrate --seed
 ```
+
+### Initial Admin user created
+An initial admin user was created after seeding, you can log in with this user using the credentials below:
+```json
+{
+  "email": "admin@email.com",
+  "password" : "cmt$passWord"
+}
+```
+
+It is not recommended to use this user in a production environment, so create a new admin user or assign a new real email and password to the initial user.
 
 ### To run the tests:
 ```bash

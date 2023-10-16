@@ -16,7 +16,7 @@ class CreateInitialAdminUserSeeder extends Seeder
     {
         $userRepository = new UserRepository();
 
-        $user = $userRepository->findByEmail('admin@email.com');
+        $user = $userRepository->findById('1');
         if (empty($user)) {
             $user = $userRepository->create([
                 'name' => 'Admin',
