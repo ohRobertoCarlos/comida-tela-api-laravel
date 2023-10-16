@@ -2,7 +2,6 @@
 namespace App\Auth\Http\Controllers;
 
 use App\Auth\Http\Requests\LoginRequest;
-use App\Auth\Http\Requests\RegisterUserRequest;
 use App\Auth\Http\Resources\JwtToken;
 use App\Auth\Http\Resources\User;
 use App\Auth\Services\AuthService;
