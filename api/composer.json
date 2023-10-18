@@ -1,8 +1,9 @@
 {
     "name": "ohrobertocarlos/comida-tela-api",
     "type": "project",
-    "description": "API da aplicação comida na tela.",
-    "keywords": ["api", "comida na tela"],
+    "version": "0.1.0",
+    "description": "Menu API for food establishments.",
+    "keywords": ["api", "food", "menu"],
     "license": "MIT",
     "authors": [
         {
