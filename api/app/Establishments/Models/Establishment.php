@@ -4,6 +4,7 @@ namespace App\Establishments\Models;
 
 use App\Menus\Models\Menu;
 use App\Models\BaseModel;
+use App\Profiles\Models\Profile;
 use Database\Factories\EstablishmentFactory;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -34,6 +35,11 @@ class Establishment extends BaseModel
     public function menu() : HasOne
     {
         return $this->hasOne(Menu::class);
+    }
+
+    public function profile() : HasOne
+    {
+        return $this->hasOne(Profile::class);
     }
 
 }
