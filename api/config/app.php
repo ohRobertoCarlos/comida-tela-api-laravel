@@ -171,6 +171,7 @@ return [
         App\Auth\Providers\AuthProvider::class,
         App\Establishments\Providers\EstablishmentProvider::class,
         App\Menus\Providers\MenuProvider::class,
+        App\Items\Providers\ItemProvider::class,
     ])->toArray(),
 
     /*

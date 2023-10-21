@@ -20,7 +20,7 @@ test('should not show a menu of establisment', function() {
     $reponse = withHeaders([
         'accept' => 'application/json',
         'Authorization' => 'Bearer ' . $token
-    ])->get('/api/v1/establishments/' . $establishment->id . '/menu');
+    ])->get('/api/v1/establishments/' . $establishment->id . '/menus');
 
     $reponse->assertForbidden();
 });
@@ -42,7 +42,7 @@ test('should show a menu of establisment', function() {
     $reponse = withHeaders([
         'accept' => 'application/json',
         'Authorization' => 'Bearer ' . $token
-    ])->get('/api/v1/establishments/' . $establishment->id . '/menu');
+    ])->get('/api/v1/establishments/' . $establishment->id . '/menus');
 
     $reponse->assertJsonFragment([
         'establishment_id' => $establishment->id

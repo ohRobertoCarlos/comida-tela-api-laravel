@@ -6,6 +6,7 @@ use App\Items\Models\Item;
 use App\Menus\Models\Menu;
 use App\Models\BaseModel;
 use App\Repositories\BaseRepository;
+use Illuminate\Support\Collection;
 
 class ItemRepository extends BaseRepository
 {
@@ -21,5 +22,12 @@ class ItemRepository extends BaseRepository
         ->where('title', $title)
         ->where('id', '<>', $ignoredItemId)
         ->exists();
+    }
+
+    public function allFromMenu(string $menuId) : Collection
+    {
+        return $this->getModel()
+        ->where('menu_id', $menuId)
+        ->get();
     }
 }

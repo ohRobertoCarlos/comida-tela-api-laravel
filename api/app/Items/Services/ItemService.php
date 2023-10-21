@@ -4,9 +4,12 @@ namespace App\Items\Services;
 
 use App\Contracts\Repository;
 use App\Items\Repositories\ItemRepository;
+use App\Menus\Repositories\MenuRepository;
 use App\Models\BaseModel;
+use Countable;
 use Illuminate\Http\File;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Throwable;
@@ -14,7 +17,8 @@ use Throwable;
 class ItemService
 {
     public function __construct(
-        private ItemRepository $repository
+        private ItemRepository $repository,
+        private MenuRepository $menuRepository
     )
     {}
 
@@ -55,5 +59,15 @@ class ItemService
     {
         return $this->repository
             ->sameTitleExists(menuId: $menuId, title: $title, ignoredItemId: $ignoredItemId);
+    }
+
+    public function getItems(string $establishmentId) : Collection
+    {
+        $menu = $this->menuRepository->getByEstablismentId($establishmentId);
+        if (empty($menu)) {
+            return collect([]);
+        }
+
+        return $this->repository->allFromMenu(menuId: $menu->id);
     }
 }
