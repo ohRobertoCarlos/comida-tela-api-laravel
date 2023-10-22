@@ -172,6 +172,7 @@ return [
         App\Establishments\Providers\EstablishmentProvider::class,
         App\Menus\Providers\MenuProvider::class,
         App\Items\Providers\ItemProvider::class,
+        App\Profiles\Providers\ProfileProvider::class,
     ])->toArray(),
 
     /*

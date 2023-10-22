@@ -12,4 +12,9 @@ class ProfileRepository extends BaseRepository
     {
         $this->model = new Profile();
     }
+
+    public function getByEstablishmentId(string $establishmentId) : BaseModel|null
+    {
+        return $this->getModel()->where('establishment_id', $establishmentId)->first();
+    }
 }
