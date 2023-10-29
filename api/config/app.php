@@ -173,6 +173,7 @@ return [
         App\Menus\Providers\MenuProvider::class,
         App\Items\Providers\ItemProvider::class,
         App\Profiles\Providers\ProfileProvider::class,
+        App\Ratings\Providers\RatingProvider::class,
     ])->toArray(),
 
     /*
