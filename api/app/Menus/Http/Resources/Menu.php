@@ -20,7 +20,7 @@ class Menu extends JsonResource
             'id' => $this->id,
             'qr_code_image_path_url' => StorageService::getUrlPublicFile(publicFilePath: $this->qr_code_image_path),
             'establishment_id' => $this->establishment_id,
-            'items' => Item::collection($this->items),
+            'items' => Item::collection($this->whenLoaded('items')),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at
         ];

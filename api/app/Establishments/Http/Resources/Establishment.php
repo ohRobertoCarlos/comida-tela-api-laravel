@@ -20,8 +20,8 @@ class Establishment extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'description' => $this->description,
-            'menu' => new Menu($this->menu),
-            'profile' => new Profile($this->profile),
+            'menu' => new Menu($this->whenLoaded('menu')),
+            'profile' => new Profile($this->whenLoaded('profile')),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

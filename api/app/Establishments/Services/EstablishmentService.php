@@ -46,6 +46,8 @@ class EstablishmentService
             throw $e;
         }
 
+        $establishment->load(['menu', 'profile']);
+
         return $establishment;
     }
 
