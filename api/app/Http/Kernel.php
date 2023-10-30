@@ -41,19 +41,22 @@ class Kernel extends HttpKernel
         'api' => [
             // \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
 //            \Illuminate\Routing\Middleware\ThrottleRequests::class.':api',
+            \App\Http\Middleware\AcceptLanguage::class,
             'throttle:rate-limiter-api',
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
         ],
         'api-verified' => [
+            \App\Http\Middleware\AcceptLanguage::class,
             'throttle:rate-limiter-api',
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
-            'verified'
+            'verified',
         ],
         'auth-api' => [
+            \App\Http\Middleware\AcceptLanguage::class,
             'throttle:rate-limiter-api',
             'auth:api',
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
-            'verified'
+            'verified',
         ],
     ];
 
