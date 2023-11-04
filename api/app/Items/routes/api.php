@@ -7,7 +7,8 @@ Route::middleware(['api'])
     ->prefix('api/v1')
     ->group(function() {
         Route::group(['prefix' => 'establishments'], function() {
-            Route::get('/{establishment_id}/menus/items', [ItemController::class, 'index']);
+            Route::post('/{establishment_id}/menus/items/{id}/like', [ItemController::class, 'like']);
             Route::get('/{establishment_id}/menus/items/{id}', [ItemController::class, 'show']);
+            Route::get('/{establishment_id}/menus/items', [ItemController::class, 'index']);
         });
     });

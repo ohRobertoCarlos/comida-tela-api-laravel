@@ -6,10 +6,13 @@ use App\Contracts\Repository;
 use App\Items\Repositories\ItemRepository;
 use App\Menus\Repositories\MenuRepository;
 use App\Models\BaseModel;
+use App\Ratings\Services\RatingService;
 use Countable;
+use Exception;
 use Illuminate\Http\File;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Throwable;
@@ -18,7 +21,8 @@ class ItemService
 {
     public function __construct(
         private ItemRepository $repository,
-        private MenuRepository $menuRepository
+        private MenuRepository $menuRepository,
+        private RatingService $ratingService
     )
     {}
 
@@ -69,5 +73,22 @@ class ItemService
         }
 
         return $this->repository->allFromMenu(menuId: $menu->id);
+    }
+
+    public function like(string $establishmentId, string $itemId, array $data) : void
+    {
+        $item = $this->getItem($itemId);
+        $menu = $this->menuRepository->getByEstablismentId($establishmentId);
+
+        if (empty($item) || $item->menu_id !== $menu->id) {
+            throw new Exception('Item not found');
+        }
+
+        DB::transaction(function() use ($item, $data, $establishmentId) {
+            $this->ratingService->store($data, $establishmentId);
+
+            $item->likes++;
+            $item->save();
+        });
     }
 }
