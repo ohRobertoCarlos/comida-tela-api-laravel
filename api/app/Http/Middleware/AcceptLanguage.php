@@ -25,7 +25,7 @@ class AcceptLanguage
         $response = $next($request);
         $response->header(
             'Content-Language',
-            $request->hasHeader('Accept-Language') ? $locale : implode(', ', $availableLanguages)
+            $request->hasHeader('Accept-Language') && $request->header('Accept-Language') != '*' ? $locale : implode(', ', $availableLanguages)
         );
 
         return $response;
