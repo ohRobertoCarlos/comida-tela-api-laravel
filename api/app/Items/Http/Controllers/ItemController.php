@@ -4,6 +4,7 @@ namespace App\Items\Http\Controllers;
 
 use App\Http\Controllers\BaseController;
 use App\Items\Http\Requests\LikeRequest;
+use App\Items\Http\Requests\UnlikeRequest;
 use App\Items\Http\Resources\Item;
 use App\Items\Services\ItemService;
 use Illuminate\Http\JsonResponse;
@@ -51,6 +52,9 @@ class ItemController extends BaseController
         return new Item($item);
     }
 
+    /**
+    * @unauthenticated
+    */
     public function like(LikeRequest $request, string $establishmentId, string $itemId) : JsonResponse
     {
         try {
@@ -65,6 +69,26 @@ class ItemController extends BaseController
 
         return response()->json([
             'message' => __('items.like_successfully')
+        ]);
+    }
+
+    /**
+    * @unauthenticated
+    */
+    public function unlike(UnlikeRequest $request, string $establishmentId, string $itemId) : JsonResponse
+    {
+        try {
+            $this->service->unlike(establishmentId: $establishmentId, itemId: $itemId, data: $request->validated());
+        } catch(Throwable $e) {
+            Log::error($e->getMessage());
+
+            return response()->json([
+                'message' => __('items.cold_not_unlike')
+            ], 400);
+        }
+
+        return response()->json([
+            'message' => __('items.unlike_successfully')
         ]);
     }
 }

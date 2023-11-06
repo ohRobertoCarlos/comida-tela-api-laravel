@@ -6,6 +6,7 @@ use App\Contracts\Repository;
 use App\Items\Repositories\ItemRepository;
 use App\Menus\Repositories\MenuRepository;
 use App\Models\BaseModel;
+use App\Ratings\Enums\Feedback;
 use App\Ratings\Services\RatingService;
 use Countable;
 use Exception;
@@ -88,6 +89,25 @@ class ItemService
             $this->ratingService->store($data, $establishmentId);
 
             $item->likes++;
+            $item->save();
+        });
+    }
+
+    public function unlike(string $establishmentId, string $itemId, array $data) : void
+    {
+        $item = $this->getItem($itemId);
+        $menu = $this->menuRepository->getByEstablismentId($establishmentId);
+
+        if (empty($item) || $item->menu_id !== $menu->id) {
+            throw new Exception('Item not found');
+        }
+
+        $data['feedback'] = Feedback::Negative->value;
+
+        DB::transaction(function() use ($item, $data, $establishmentId) {
+            $this->ratingService->store($data, $establishmentId);
+
+            $item->not_likes++;
             $item->save();
         });
     }
