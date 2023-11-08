@@ -117,3 +117,14 @@ function createEstablishmentWithMenu() : TestResponse
         'Authorization' => 'Bearer ' . $token
     ])->postJson('/api/v1/establishments', $establishment->toArray());
 }
+
+function makeBodyRequestLikeUnlikeItem()
+{
+    return [
+        "date_visit" => now()->format('Y-m-d'),
+        "comment" => fake()->text(),
+        "name" => fake()->name(),
+        "phone_number" => fake()->phoneNumber(),
+        "birthday" => now()->subYears(30)->format('Y-m-d')
+    ];
+}

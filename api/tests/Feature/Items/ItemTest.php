@@ -160,3 +160,77 @@ test('should list items in menu', function () {
     $assert = count($reponse->json('data')) > 0;
     $this->assertTrue($assert);
 });
+
+test('should not like item in menu', function () {
+    $reponse = createEstablishmentWithMenu();
+    $reponse->assertCreated();
+
+    $item = createItemMenu(['menu_id' => $reponse->json('data.menu.id')]);
+
+    $body = makeBodyRequestLikeUnlikeItem();
+    unset($body['name']);
+
+    $reponse = withHeaders([
+        'accept' => 'application/json'
+    ])->post('/api/v1/establishments/' . $reponse->json('data.id') . '/menus/items/' . $item->id . '/like', $body);
+
+    $reponse->assertUnprocessable();
+
+    $item = $item->fresh();
+
+    $this->assertEquals(0, $item->likes);
+});
+
+test('should like item in menu', function () {
+    $reponse = createEstablishmentWithMenu();
+    $reponse->assertCreated();
+
+    $item = createItemMenu(['menu_id' => $reponse->json('data.menu.id')]);
+
+    $reponse = withHeaders([
+        'accept' => 'application/json'
+    ])->post('/api/v1/establishments/' . $reponse->json('data.id') . '/menus/items/' . $item->id . '/like', makeBodyRequestLikeUnlikeItem());
+
+    $reponse->assertOk();
+
+    $item = $item->fresh();
+
+    $this->assertEquals(1, $item->likes);
+});
+
+test('should not unlike item in menu', function () {
+    $reponse = createEstablishmentWithMenu();
+    $reponse->assertCreated();
+
+    $item = createItemMenu(['menu_id' => $reponse->json('data.menu.id')]);
+
+    $body = makeBodyRequestLikeUnlikeItem();
+    unset($body['name']);
+
+    $reponse = withHeaders([
+        'accept' => 'application/json'
+    ])->post('/api/v1/establishments/' . $reponse->json('data.id') . '/menus/items/' . $item->id . '/unlike', $body);
+
+    $reponse->assertUnprocessable();
+
+    $item = $item->fresh();
+
+    $this->assertEquals(0, $item->not_likes);
+});
+
+test('should unlike item in menu', function () {
+    $reponse = createEstablishmentWithMenu();
+    $reponse->assertCreated();
+
+    $item = createItemMenu(['menu_id' => $reponse->json('data.menu.id')]);
+
+    $reponse = withHeaders([
+        'accept' => 'application/json'
+    ])->post('/api/v1/establishments/' . $reponse->json('data.id') . '/menus/items/' . $item->id . '/unlike', makeBodyRequestLikeUnlikeItem());
+
+    $reponse->assertOk();
+
+    $item = $item->fresh();
+
+    $this->assertEquals(1, $item->not_likes);
+});
