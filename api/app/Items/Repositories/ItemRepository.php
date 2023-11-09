@@ -30,4 +30,25 @@ class ItemRepository extends BaseRepository
         ->where('menu_id', $menuId)
         ->get();
     }
+
+    public function allFromMenuWithSearch(string $menuId, array $search = []) : Collection
+    {
+        $searchable = $this->getModel()->getSearchableFields();
+        $baseQuery = $this->getModel()
+        ->where('menu_id', $menuId);
+
+        foreach ($search as $field => $value) {
+            if (!in_array($field, array_keys($searchable))) {
+                continue;
+            }
+
+            $baseQuery = $baseQuery->where(
+                $field,
+                $searchable[$field],
+                strtolower($searchable[$field]) === 'like' ?  '%'.$value.'%' : $value
+            );
+        }
+
+        return $baseQuery->get();
+    }
 }

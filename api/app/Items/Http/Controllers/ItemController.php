@@ -8,6 +8,7 @@ use App\Items\Http\Requests\UnlikeRequest;
 use App\Items\Http\Resources\Item;
 use App\Items\Services\ItemService;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Facades\Log;
 use Throwable;
@@ -21,10 +22,10 @@ class ItemController extends BaseController
     /**
     * @unauthenticated
     */
-    public function index(string $establishmentId) : AnonymousResourceCollection
+    public function index(Request $request, string $establishmentId) : AnonymousResourceCollection
     {
         try {
-            $items = $this->service->getItems(establishmentId: $establishmentId);
+            $items = $this->service->getItems(establishmentId: $establishmentId, queryParams: $request->all());
         } catch(Throwable $e) {
             Log::error($e->getMessage());
         }

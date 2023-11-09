@@ -66,14 +66,14 @@ class ItemService
             ->sameTitleExists(menuId: $menuId, title: $title, ignoredItemId: $ignoredItemId);
     }
 
-    public function getItems(string $establishmentId) : Collection
+    public function getItems(string $establishmentId, array $queryParams = []) : Collection
     {
         $menu = $this->menuRepository->getByEstablismentId($establishmentId);
         if (empty($menu)) {
             return collect([]);
         }
 
-        return $this->repository->allFromMenu(menuId: $menu->id);
+        return $this->repository->allFromMenuWithSearch(menuId: $menu->id, search: $queryParams);
     }
 
     public function like(string $establishmentId, string $itemId, array $data) : void

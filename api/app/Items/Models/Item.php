@@ -28,11 +28,21 @@ class Item extends BaseModel
         'portions',
     ];
 
+    private $searchable = [
+        'title' => 'like',
+        'description' => 'like',
+    ];
+
     /**
      * Create a new factory instance for the model.
      */
     protected static function newFactory(): ItemFactory
     {
         return ItemFactory::new();
+    }
+
+    public function getSearchableFields() : array
+    {
+        return $this->searchable ?? [];
     }
 }
