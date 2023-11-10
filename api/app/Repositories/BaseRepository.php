@@ -5,6 +5,8 @@ namespace App\Repositories;
 use App\Contracts\Repository;
 use App\Models\BaseModel;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Log;
+use Throwable;
 
 abstract class BaseRepository implements Repository
 {
@@ -41,5 +43,18 @@ abstract class BaseRepository implements Repository
     public function all(): Collection
     {
         return $this->getModel()->all();
+    }
+
+    public function updateRelationships(BaseModel $model, array $relations) : void
+    {
+        foreach ($relations as $relation => $values) {
+            try {
+                $model->$relation()->sync($values);
+            } catch (Throwable $e) {
+                Log::error($e->getMessage());
+
+                throw $e;
+            }
+        }
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Items\Http\Resources;
 
+use App\Categories\Http\Resources\Category;
 use App\Shared\Services\StorageService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -27,6 +28,7 @@ class Item extends JsonResource
             'min_price' => $this->min_price,
             'currency' => $this->currency,
             'portions' => $this->portions,
+            'categories' => $this->categories,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

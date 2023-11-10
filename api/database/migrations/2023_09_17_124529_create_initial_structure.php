@@ -101,6 +101,29 @@ return new class extends Migration
             $table->timestamps();
             $table->softDeletes();
         });
+
+        Schema::create('categories', function (Blueprint $table) {
+            $table->uuid('id')->primary();
+            $table->string('name', 70);
+            $table->uuid('establishment_id')->nullable();
+
+            $table->foreign('establishment_id')->references('id')->on('establishments');
+
+            $table->timestamps();
+            $table->softDeletes();
+        });
+
+        Schema::create('items_categories', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->uuid('item_id');
+            $table->uuid('category_id');
+
+            $table->foreign('item_id')->references('id')->on('items');
+            $table->foreign('category_id')->references('id')->on('categories');
+
+            $table->timestamps();
+            $table->softDeletes();
+        });
     }
 
     /**
@@ -108,6 +131,17 @@ return new class extends Migration
      */
     public function down(): void
     {
+        Schema::table('items_categories', function(Blueprint $table) {
+            $table->dropForeign('items_categories_category_id_foreign');
+            $table->dropForeign('items_categories_item_id_foreign');
+        });
+        Schema::dropIfExists('items_categories');
+
+        Schema::table('categories', function(Blueprint $table) {
+            $table->dropForeign('categories_establishment_id_foreign');
+        });
+        Schema::dropIfExists('categories');
+
         Schema::table('items', function(Blueprint $table) {
             $table->dropForeign('items_menu_id_foreign');
         });

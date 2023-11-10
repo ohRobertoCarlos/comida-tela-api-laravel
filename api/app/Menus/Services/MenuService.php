@@ -10,6 +10,7 @@ use App\Models\BaseModel;
 use Exception;
 use Illuminate\Http\File;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\DB;
 
 class MenuService
 {
@@ -42,7 +43,14 @@ class MenuService
             menu: $menu
         );
 
-        return $this->itemService->create(menu: $menu, data: $data);
+        $item = $this->itemService->create(menu: $menu, data: $data);
+
+        $this->updateRelationships(
+            item: $item,
+            relations: ['categories' => $data['categories'] ?? []]
+        );
+
+        return $item;
     }
 
     private function storeImageItem(File|UploadedFile $file, BaseModel $menu) : string
@@ -66,18 +74,34 @@ class MenuService
             }
         }
 
-        if (!empty($data['cover_image'])) {
+        if (isset($data['cover_image'])) {
             $data['cover_image_location'] = $this->storeImageItem(
                 file: $data['cover_image'],
                 menu: $this->getMenu($item->menu_id)
             );
         }
 
-        return $this->itemService->update(id: $item->id, data: $data);
+        $this->itemService->update(id: $item->id, data: $data);
+
+        if (in_array('categories', array_keys($data))) {
+            $this->updateRelationships(
+                item: $item,
+                relations: ['categories' => $data['categories']]
+            );
+        }
+
+        return true;
     }
 
     public function deleteItem(string $itemId) : bool
     {
         return $this->itemService->delete(id: $itemId);
+    }
+
+    public function updateRelationships(BaseModel $item, array $relations) : void
+    {
+        DB::transaction(function() use ($item, $relations) {
+            $this->repository->updateRelationships(model: $item, relations: $relations);
+        });
     }
 }

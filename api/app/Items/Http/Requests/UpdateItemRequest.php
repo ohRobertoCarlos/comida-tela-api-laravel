@@ -29,7 +29,9 @@ class UpdateItemRequest extends UserIsOfEstablismentRequest
             'min_price' => 'decimal:2',
             'currency' => 'string',
             'portions' => 'integer',
-            'cover_image' => 'image'
+            'cover_image' => 'image',
+            'categories' => 'array',
+            'categories.*' => 'string',
         ];
     }
 }

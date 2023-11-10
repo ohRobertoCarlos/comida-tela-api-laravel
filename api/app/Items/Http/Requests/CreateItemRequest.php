@@ -29,7 +29,9 @@ class CreateItemRequest extends UserIsOfEstablismentRequest
             'min_price' => 'required|decimal:2',
             'currency' => 'required|string',
             'portions' => 'required|integer',
-            'cover_image' => 'required|image'
+            'cover_image' => 'required|image',
+            'categories' => 'array',
+            'categories.*' => 'string',
         ];
     }
 }
