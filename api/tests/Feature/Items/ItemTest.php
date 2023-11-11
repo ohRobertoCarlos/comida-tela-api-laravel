@@ -239,7 +239,7 @@ test('should not search items in menu', function () {
     $reponse = createEstablishmentWithMenu();
     $reponse->assertCreated();
 
-    createItemMenu(['menu_id' => $reponse->json('data.menu.id'), 'title' => 'Cake']);
+    createItemMenu(['menu_id' => $reponse->json('data.menu.id'), 'title' => 'Cake', 'description' => 'Delicios Cake']);
     createItemMenu(['menu_id' => $reponse->json('data.menu.id'), 'title' => 'Orange juice']);
 
     $reponse = withHeaders([
@@ -254,13 +254,32 @@ test('should search items in menu', function () {
     $reponse = createEstablishmentWithMenu();
     $reponse->assertCreated();
 
-    createItemMenu(['menu_id' => $reponse->json('data.menu.id'), 'title' => 'Cake']);
+    createItemMenu(['menu_id' => $reponse->json('data.menu.id'), 'title' => 'Cake', 'description' => 'Delicious cake']);
     createItemMenu(['menu_id' => $reponse->json('data.menu.id'), 'title' => 'Orange juice']);
+
+    $establishmentId = $reponse->json('data.id');
 
     $reponse = withHeaders([
         'accept' => 'application/json'
-    ])->get('/api/v1/establishments/' . $reponse->json('data.id') . '/menus/items?title=Orange');
+    ])->get('/api/v1/establishments/' . $establishmentId . '/menus/items?title=Orange');
 
+    $reponse->assertOk();
     $assert = count($reponse->json('data')) > 0;
+    $this->assertTrue($assert);
+
+    $reponse = withHeaders([
+        'accept' => 'application/json'
+    ])->get('/api/v1/establishments/' . $establishmentId . '/menus/items?title=Cak&description=cake');
+
+    $reponse->assertOk();
+    $assert = count($reponse->json('data')) > 0;
+    $this->assertTrue($assert);
+
+    $reponse = withHeaders([
+        'accept' => 'application/json'
+    ])->get('/api/v1/establishments/' . $establishmentId . '/menus/items?description=cakes');
+
+    $reponse->assertOk();
+    $assert = count($reponse->json('data')) === 0;
     $this->assertTrue($assert);
 });
