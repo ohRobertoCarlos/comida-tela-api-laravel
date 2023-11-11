@@ -1,5 +1,6 @@
 <?php
 
+use App\Categories\Enums\Category;
 use Illuminate\Http\UploadedFile;
 
 use function \Pest\Laravel\{
@@ -22,6 +23,8 @@ test('should not create a item in menu', function () {
 
 
 test('should create a item in menu', function () {
+    $this->seed();
+
     $reponse = createEstablishmentWithMenu();
     $reponse->assertCreated();
 
@@ -29,6 +32,7 @@ test('should create a item in menu', function () {
     $token = getTokenUserEstablishmentLogged($reponse->json('data.id'));
     $data = $item->toArray();
     $data['cover_image'] = UploadedFile::fake()->image('photo1.jpg');
+    $data['categories'] = [Category::Highlights->value];
 
     $reponse = withHeaders([
         'accept' => 'application/json',
@@ -36,6 +40,9 @@ test('should create a item in menu', function () {
     ])->post('/api/v1/establishments/' . $reponse->json('data.id') . '/menus/items', $data);
 
     $reponse->assertCreated();
+
+    $assert = count($reponse->json('data.categories')) === 1;
+    $this->assertTrue($assert);
 });
 
 test('should not show a item in menu', function () {
@@ -84,18 +91,24 @@ test('should not update a item in menu', function () {
 
 
 test('should update a item in menu', function () {
+    $this->seed();
+
     $reponse = createEstablishmentWithMenu();
     $reponse->assertCreated();
 
     $item = createItemMenu(['menu_id' => $reponse->json('data.menu.id')]);
     $token = getTokenUserEstablishmentLogged($reponse->json('data.id'));
 
-    $data = ['title' => 'Farofa', 'portions' => 5];
+    $data = ['title' => 'Farofa', 'portions' => 5, 'categories' => [Category::Combos->value, Category::Highlights->value]];
 
     $reponse = withHeaders([
         'accept' => 'application/json',
         'Authorization' => 'Bearer ' . $token
     ])->patch('/api/v1/establishments/' . $reponse->json('data.id') . '/menus/items/' . $item->id, $data);
+
+    $item = $item->fresh();
+
+    $this->assertEquals(2, $item->categories->count());
 
     $reponse->assertOk();
 });
