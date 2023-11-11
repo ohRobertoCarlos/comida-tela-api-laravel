@@ -234,3 +234,33 @@ test('should unlike item in menu', function () {
 
     $this->assertEquals(1, $item->not_likes);
 });
+
+test('should not search items in menu', function () {
+    $reponse = createEstablishmentWithMenu();
+    $reponse->assertCreated();
+
+    createItemMenu(['menu_id' => $reponse->json('data.menu.id'), 'title' => 'Cake']);
+    createItemMenu(['menu_id' => $reponse->json('data.menu.id'), 'title' => 'Orange juice']);
+
+    $reponse = withHeaders([
+        'accept' => 'application/json'
+    ])->get('/api/v1/establishments/' . $reponse->json('data.id') . '/menus/items?title=burger');
+
+    $assert = count($reponse->json('data')) === 0;
+    $this->assertTrue($assert);
+});
+
+test('should search items in menu', function () {
+    $reponse = createEstablishmentWithMenu();
+    $reponse->assertCreated();
+
+    createItemMenu(['menu_id' => $reponse->json('data.menu.id'), 'title' => 'Cake']);
+    createItemMenu(['menu_id' => $reponse->json('data.menu.id'), 'title' => 'Orange juice']);
+
+    $reponse = withHeaders([
+        'accept' => 'application/json'
+    ])->get('/api/v1/establishments/' . $reponse->json('data.id') . '/menus/items?title=Orange');
+
+    $assert = count($reponse->json('data')) > 0;
+    $this->assertTrue($assert);
+});
