@@ -174,6 +174,7 @@ return [
         App\Items\Providers\ItemProvider::class,
         App\Profiles\Providers\ProfileProvider::class,
         App\Ratings\Providers\RatingProvider::class,
+        App\Categories\Providers\CategoryProvider::class,
     ])->toArray(),
 
     /*
