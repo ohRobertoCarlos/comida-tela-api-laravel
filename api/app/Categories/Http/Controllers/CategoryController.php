@@ -26,9 +26,18 @@ class CategoryController extends BaseController
         return Category::collection($categories);
     }
 
-    public function show()
+    public function show(string $establishmentId, string $categoryId) : JsonResponse|Category
     {
+        try {
+            $category = $this->service->get(establishmentId: $establishmentId, categoryId: $categoryId);
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+            return response()->json([
+                'message' => __('categories.category_not_found'),
+            ], 404);
+        }
 
+        return new Category($category);
     }
 
     public function store(StoreCategoryRequest $request, string $establishmentId) : JsonResponse|Category

@@ -18,6 +18,19 @@ class CategoryService
     )
     {}
 
+    public function get(string $establishmentId, string $categoryId) : BaseModel|null
+    {
+        $category = $this->repository->findById(id: $categoryId);
+        if (
+            empty($category) ||
+            ($category->establishment_id !== null && $category->establishment_id !== $establishmentId)
+        ) {
+            throw new Exception('Category not found.');
+        }
+
+        return $category;
+    }
+
     public function all(string $establishmentId) : Collection
     {
         return $this->repository->allFromEstablishment(establishmentId: $establishmentId);
