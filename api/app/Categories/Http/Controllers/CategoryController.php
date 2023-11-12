@@ -3,11 +3,13 @@
 namespace App\Categories\Http\Controllers;
 
 use App\Categories\Exceptions\CategorySameNameAlreadyExistsException;
+use App\Categories\Exceptions\RemoveItemsCategoryDeleteException;
 use App\Categories\Http\Requests\StoreCategoryRequest;
 use App\Categories\Http\Requests\UpdateCategoryRequest;
 use App\Categories\Http\Resources\Category;
 use App\Categories\Services\CategoryService;
 use App\Http\Controllers\BaseController;
+use App\Menus\Http\Requests\UserIsOfEstablismentRequest;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
@@ -61,7 +63,7 @@ class CategoryController extends BaseController
         return new Category($category);
     }
 
-    public function update(UpdateCategoryRequest $request, string $establishmentId, string $categoryId)
+    public function update(UpdateCategoryRequest $request, string $establishmentId, string $categoryId) : JsonResponse
     {
         try {
             $this->service->update(establishmentId: $establishmentId, categoryId: $categoryId, data: $request->validated());
@@ -82,8 +84,24 @@ class CategoryController extends BaseController
         ]);
     }
 
-    public function destroy()
+    public function destroy(UserIsOfEstablismentRequest $request, string $establishmentId, string $categoryId) : JsonResponse
     {
+        try {
+            $this->service->delete(establishmentId: $establishmentId, categoryId: $categoryId);
+        } catch(RemoveItemsCategoryDeleteException $e) {
+            Log::error($e->getMessage());
+            return response()->json([
+                'message' => __('categories.remove_items_delete_category'),
+            ], 400);
+        } catch (Throwable $e) {
+            Log::error($e->getMessage());
+            return response()->json([
+                'message' => __('categories.cold_not_deleted'),
+            ], 400);
+        }
 
+        return response()->json([
+            'message' => __('categories.category_deleted_successfully'),
+        ]);
     }
 }

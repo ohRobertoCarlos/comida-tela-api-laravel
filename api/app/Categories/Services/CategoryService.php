@@ -3,8 +3,10 @@
 namespace App\Categories\Services;
 
 use App\Categories\Events\CategoryWasCreated;
+use App\Categories\Events\CategoryWasDeleted;
 use App\Categories\Events\CategoryWasUpdated;
 use App\Categories\Exceptions\CategorySameNameAlreadyExistsException;
+use App\Categories\Exceptions\RemoveItemsCategoryDeleteException;
 use App\Categories\Repositories\CategoryRepository;
 use App\Establishments\Services\EstablishmentService;
 use App\Models\BaseModel;
@@ -82,6 +84,27 @@ class CategoryService
         $category = $category->fresh();
 
         event(new CategoryWasUpdated($category));
+
+        return true;
+    }
+
+    public function delete(string $establishmentId, string $categoryId) : bool
+    {
+        $category = $this->get($establishmentId, $categoryId);
+
+        if ($category->establishment_id === null) {
+            throw new Exception('It is not possible to delete a default category.');
+        }
+
+        if (
+            $category->items()->count() > 0
+        ) {
+            throw new RemoveItemsCategoryDeleteException('Remove items related to the category to delete it.');
+        }
+
+        $category->delete();
+
+        event(new CategoryWasDeleted($category));
 
         return true;
     }
