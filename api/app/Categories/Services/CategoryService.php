@@ -3,6 +3,7 @@
 namespace App\Categories\Services;
 
 use App\Categories\Events\CategoryWasCreated;
+use App\Categories\Events\CategoryWasUpdated;
 use App\Categories\Exceptions\CategorySameNameAlreadyExistsException;
 use App\Categories\Repositories\CategoryRepository;
 use App\Establishments\Services\EstablishmentService;
@@ -61,5 +62,27 @@ class CategoryService
     public function categorySameNameExists(string $name, string $establishmentId, string|null $ignoredId = null) : bool
     {
         return $this->repository->categorySameNameExists(name: $name, establishmentId: $establishmentId, ignoredId: $ignoredId);
+    }
+
+    public function update(string $establishmentId, string $categoryId, array $data) : bool
+    {
+        $category = $this->get($establishmentId, $categoryId);
+
+        if (empty($category)) {
+            throw new Exception('Category not found.');
+        }
+
+        if (
+            $this->categorySameNameExists($data['name'], $establishmentId, $categoryId)
+        ) {
+            throw new CategorySameNameAlreadyExistsException('Category same name already exists.');
+        }
+
+        $category->update($data);
+        $category = $category->fresh();
+
+        event(new CategoryWasUpdated($category));
+
+        return true;
     }
 }

@@ -4,6 +4,7 @@ namespace App\Categories\Http\Controllers;
 
 use App\Categories\Exceptions\CategorySameNameAlreadyExistsException;
 use App\Categories\Http\Requests\StoreCategoryRequest;
+use App\Categories\Http\Requests\UpdateCategoryRequest;
 use App\Categories\Http\Resources\Category;
 use App\Categories\Services\CategoryService;
 use App\Http\Controllers\BaseController;
@@ -11,6 +12,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Facades\Log;
+use Throwable;
 
 class CategoryController extends BaseController
 {
@@ -49,7 +51,7 @@ class CategoryController extends BaseController
             return response()->json([
                 'message' => __('categories.category_same_name_already_exists'),
             ], 400);
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Log::error($e->getMessage());
             return response()->json([
                 'message' => __('categories.cold_not_create_category'),
@@ -59,9 +61,25 @@ class CategoryController extends BaseController
         return new Category($category);
     }
 
-    public function update()
+    public function update(UpdateCategoryRequest $request, string $establishmentId, string $categoryId)
     {
+        try {
+            $this->service->update(establishmentId: $establishmentId, categoryId: $categoryId, data: $request->validated());
+        } catch (CategorySameNameAlreadyExistsException $e) {
+            Log::error($e->getMessage());
+            return response()->json([
+                'message' => __('categories.category_same_name_already_exists'),
+            ], 400);
+        } catch (Throwable $e) {
+            Log::error($e->getMessage());
+            return response()->json([
+                'message' => __('categories.cold_not_updated'),
+            ], 400);
+        }
 
+        return response()->json([
+            'message' => __('categories.category_updated_successfully'),
+        ]);
     }
 
     public function destroy()

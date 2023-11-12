@@ -5,7 +5,7 @@ namespace App\Categories\Http\Requests;
 use App\Menus\Http\Requests\UserIsOfEstablismentRequest;
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreCategoryRequest extends UserIsOfEstablismentRequest
+class UpdateCategoryRequest extends UserIsOfEstablismentRequest
 {
     /**
      * Get the validation rules that apply to the request.
