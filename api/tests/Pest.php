@@ -128,3 +128,11 @@ function makeBodyRequestLikeUnlikeItem()
         "birthday" => now()->subYears(30)->format('Y-m-d')
     ];
 }
+
+function createCategoryEstablishment(string $establishmentId) : \App\Models\BaseModel
+{
+    return (new \App\Categories\Repositories\CategoryRepository())
+        ->getModel()
+        ->factory()
+        ->create(['establishment_id' => $establishmentId]);
+}
