@@ -70,6 +70,10 @@ class CategoryService
     {
         $category = $this->get($establishmentId, $categoryId);
 
+        if ($category->establishment_id === null) {
+            throw new Exception('Cold not update an default category.');
+        }
+
         if (empty($category)) {
             throw new Exception('Category not found.');
         }
