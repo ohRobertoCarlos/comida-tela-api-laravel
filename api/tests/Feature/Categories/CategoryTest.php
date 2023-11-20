@@ -70,7 +70,7 @@ test('establishment user must update an establishment category', function () {
 
     $category = $category->fresh();
 
-    $this->assertEquals('Orange Cakes', $category->name);
+    expect($category->name)->toEqual('Orange Cakes');
 });
 
 
@@ -123,7 +123,7 @@ test('establishment user must delete an establishment category', function () {
 
     $category = $category->fresh();
 
-    $this->assertTrue(!empty($category->deleted_at));
+    expect(!empty($category->deleted_at))->toBeTrue();
 });
 
 test('establishment user must not delete an establishment category with items', function () {

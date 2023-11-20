@@ -42,7 +42,8 @@ test('should create a item in menu', function () {
     $reponse->assertCreated();
 
     $assert = count($reponse->json('data.categories')) === 1;
-    $this->assertTrue($assert);
+
+    expect($assert)->toBeTrue();
 });
 
 test('should not show a item in menu', function () {
@@ -108,7 +109,7 @@ test('should update a item in menu', function () {
 
     $item = $item->fresh();
 
-    $this->assertEquals(2, $item->categories->count());
+    expect($item->categories->count())->toEqual(2);
 
     $reponse->assertOk();
 });
@@ -156,7 +157,8 @@ test('should not list items in menu', function () {
     ])->get('/api/v1/establishments/' . $reponse->json('data.id') . 'x' . '/menus/items');
 
     $assert = count($reponse->json('data')) === 0;
-    $this->assertTrue($assert);
+
+    expect($assert)->toBeTrue();
 });
 
 test('should list items in menu', function () {
@@ -171,7 +173,8 @@ test('should list items in menu', function () {
     ])->get('/api/v1/establishments/' . $reponse->json('data.id') . '/menus/items');
 
     $assert = count($reponse->json('data')) > 0;
-    $this->assertTrue($assert);
+
+    expect($assert)->toBeTrue();
 });
 
 test('should not like item in menu', function () {
@@ -191,7 +194,7 @@ test('should not like item in menu', function () {
 
     $item = $item->fresh();
 
-    $this->assertEquals(0, $item->likes);
+    expect($item->likes)->toEqual(0);
 });
 
 test('should like item in menu', function () {
@@ -208,7 +211,7 @@ test('should like item in menu', function () {
 
     $item = $item->fresh();
 
-    $this->assertEquals(1, $item->likes);
+    expect($item->likes)->toEqual(1);
 });
 
 test('should not unlike item in menu', function () {
@@ -228,7 +231,7 @@ test('should not unlike item in menu', function () {
 
     $item = $item->fresh();
 
-    $this->assertEquals(0, $item->not_likes);
+    expect($item->not_likes)->toEqual(0);
 });
 
 test('should unlike item in menu', function () {
@@ -245,7 +248,7 @@ test('should unlike item in menu', function () {
 
     $item = $item->fresh();
 
-    $this->assertEquals(1, $item->not_likes);
+    expect($item->not_likes)->toEqual(1);
 });
 
 test('should not search items in menu', function () {
@@ -260,7 +263,8 @@ test('should not search items in menu', function () {
     ])->get('/api/v1/establishments/' . $reponse->json('data.id') . '/menus/items?title=burger');
 
     $assert = count($reponse->json('data')) === 0;
-    $this->assertTrue($assert);
+
+    expect($assert)->toBeTrue();
 });
 
 test('should search items in menu', function () {
@@ -278,7 +282,8 @@ test('should search items in menu', function () {
 
     $reponse->assertOk();
     $assert = count($reponse->json('data')) > 0;
-    $this->assertTrue($assert);
+
+    expect($assert)->toBeTrue();
 
     $reponse = withHeaders([
         'accept' => 'application/json'
@@ -286,7 +291,8 @@ test('should search items in menu', function () {
 
     $reponse->assertOk();
     $assert = count($reponse->json('data')) > 0;
-    $this->assertTrue($assert);
+
+    expect($assert)->toBeTrue();
 
     $reponse = withHeaders([
         'accept' => 'application/json'
@@ -294,5 +300,6 @@ test('should search items in menu', function () {
 
     $reponse->assertOk();
     $assert = count($reponse->json('data')) === 0;
-    $this->assertTrue($assert);
+
+    expect($assert)->toBeTrue();
 });
