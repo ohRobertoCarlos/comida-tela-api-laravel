@@ -111,4 +111,12 @@ class EstablishmentRepository extends BaseRepository
 
         return $user;
     }
+
+    public function getByMenuCode(string $menuCode) : BaseModel|null
+    {
+        return $this->getModel()
+            ->where('menu_code', $menuCode)
+            ->with(['menu', 'profile'])
+            ->first();
+    }
 }

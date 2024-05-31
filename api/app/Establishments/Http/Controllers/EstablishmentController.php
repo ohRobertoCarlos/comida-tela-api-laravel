@@ -179,4 +179,24 @@ class EstablishmentController extends BaseController
 
         return new User($user);
     }
+
+    /**
+     * @unauthenticated
+     */
+    public function showByMenuCode($menuCode) : Establishment|JsonResponse
+    {
+        try {
+            $establishment = $this->service->getByMenuCode(menuCode: $menuCode);
+        } catch(Throwable $e) {
+            Log::error($e->getMessage());
+        }
+
+        if (!isset($establishment) || empty($establishment)) {
+            return response()->json([
+                'message' => __('establishments.not_show_establishment')
+            ], 404);
+        }
+
+        return new Establishment($establishment);
+    }
 }

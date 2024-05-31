@@ -117,4 +117,9 @@ class EstablishmentService
     {
         return $this->repository->getUser(establishmentId: $establishmentId, userId: $userId);
     }
+
+    public function getByMenuCode(string $menuCode) : BaseModel|null
+    {
+        return $this->repository->getByMenuCode(menuCode: $menuCode);
+    }
 }
