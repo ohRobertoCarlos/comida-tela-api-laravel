@@ -39,12 +39,27 @@ cp .env.example .env
 ```
 
 ### Install dependencies
-#### Install with composer image (if the image does not exist locally it will be downloaded):
+Ensure that you use PHP 8.1 for installing dependencies. You can use Docker to achieve this:
+* Create a Dockerfile with PHP 8.1 and Composer: Create a temporary Dockerfile in *api* directory with the following content:
+```bash
+FROM php:8.1-cli
+
+# Install Composer
+COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
+
+WORKDIR /app
+```
+* Build the Docker image:
+```bash
+docker build -t php81-composer .
+```
+
+* Install dependencies using the custom Docker image:
 ```bash
 docker run --rm --interactive --tty \
   --volume $PWD:/app \
   -u $(id -u):$(id -g) \
-  composer install
+  php81-composer composer install --ignore-platform-reqs
 ```
 
 ### This project is using the Laravel Sail package in the local development environment, to up the containers run:
