@@ -84,7 +84,8 @@ class User extends BaseModel implements
     public function sendWelcomeEmail()
     {
         $token = Password::createToken($this);
-        $resetUrl = env('APP_CLIENT_URL') . '/reset-password?token='.$token;
+        $resetUrl = trim(env('APP_CLIENT_URL'), '/') . '/reset-password?token='.$token;
+
         Mail::to($this)->send(new Welcome($this, $resetUrl));
     }
 }
