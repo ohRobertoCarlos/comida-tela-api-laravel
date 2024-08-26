@@ -17,4 +17,13 @@ class MenuRepository extends BaseRepository
     {
         return $this->getModel()->where('establishment_id', $establishmentId)->with('items')->first();
     }
+
+    public function getByMenuCode(string $menuCode) : BaseModel|null
+    {
+        return $this->getModel()
+            ->join('establishments', 'establishments.id', '=', 'menus.establishment_id')
+            ->where('establishments.menu_code', $menuCode)
+            ->select('menus.*')
+            ->first();
+    }
 }

@@ -104,4 +104,20 @@ class MenuService
             $this->repository->updateRelationships(model: $item, relations: $relations);
         });
     }
+
+    public function getUrlAppClient(string $menuCode) : string
+    {
+        $menu = $this->repository->getByMenuCode(menuCode: $menuCode);
+        $menuCodeEncoded = '';
+
+        if (empty($menu) || empty($menuCode)) {
+            $menuCodeEncoded = 'establishment-not-found';
+        } else {
+            $menuCodeEncoded = urlencode($menuCode);
+        }
+
+        $baseUrl = trim(env('APP_CLIENT_URL', 'http://localhost'), '/');
+
+        return $baseUrl . '/' . $menuCodeEncoded;
+    }
 }

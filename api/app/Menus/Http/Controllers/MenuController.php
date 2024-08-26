@@ -10,6 +10,8 @@ use App\Menus\Http\Requests\UserIsOfEstablismentRequest;
 use App\Menus\Http\Resources\Menu;
 use App\Menus\Services\MenuService;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Throwable;
 
@@ -93,5 +95,13 @@ class MenuController extends BaseController
         return response()->json([
             'message' => __('menus.item_deleted_successfully')
         ]);
+    }
+
+    /** @unauthenticated */
+    public function redirectToAppClient(Request $request) : RedirectResponse
+    {
+        $urlAppClient = $this->service->getUrlAppClient(menuCode: $request->input('menu_code', ''));
+
+        return redirect($urlAppClient);
     }
 }

@@ -12,6 +12,7 @@ class MenuProvider extends ServiceProvider
     public function register(): void
     {
         $this->loadRoutesFrom(__DIR__ . '/../routes/api.php');
+        $this->loadRoutesFrom(__DIR__ . '/../routes/redirect.php');
     }
 
     /**
