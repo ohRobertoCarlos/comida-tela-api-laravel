@@ -2,12 +2,14 @@
 
 namespace App\Establishments\Models;
 
+use App\Categories\Models\Category;
 use App\Menus\Models\Menu;
 use App\Models\BaseModel;
 use App\Profiles\Models\Profile;
 use Database\Factories\EstablishmentFactory;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -42,4 +44,8 @@ class Establishment extends BaseModel
         return $this->hasOne(Profile::class);
     }
 
+    public function categories() : HasMany
+    {
+        return $this->hasMany(Category::class, 'establishment_id', 'id');
+    }
 }

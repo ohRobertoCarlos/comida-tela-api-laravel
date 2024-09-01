@@ -116,7 +116,7 @@ class EstablishmentRepository extends BaseRepository
     {
         return $this->getModel()
             ->where('menu_code', $menuCode)
-            ->with(['menu', 'profile'])
+            ->with(['menu', 'profile', 'categories.items'])
             ->first();
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Establishments\Http\Resources;
 
+use App\Categories\Http\Resources\Category;
 use App\Menus\Http\Resources\Menu;
 use App\Profiles\Http\Resources\Profile;
 use Illuminate\Http\Request;
@@ -23,6 +24,7 @@ class Establishment extends JsonResource
             'menu_code' => $this->menu_code,
             'menu' => new Menu($this->whenLoaded('menu')),
             'profile' => new Profile($this->whenLoaded('profile')),
+            'categories' => Category::collection($this->whenLoaded('categories')),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];
