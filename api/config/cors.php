@@ -19,7 +19,7 @@ return [
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => ['*'],
+    'allowed_origins' => [trim(env('APP_CLIENT_URL', ''), '/')],
 
     'allowed_origins_patterns' => [],
 
