@@ -23,4 +23,12 @@ class Menu extends BaseModel
     {
         return $this->hasMany(Item::class, 'menu_id', 'id');
     }
+
+    public function itemsWithoutCategory()
+    {
+        return $this->items()
+            ->leftJoin('items_categories', 'items.id', '=', 'items_categories.item_id')
+            ->whereNull('items_categories.category_id')
+            ->select('items.*');
+    }
 }
