@@ -23,9 +23,9 @@ class UpdateProfileRequest extends UserIsOfEstablismentRequest
     public function rules(): array
     {
         return [
-            'facebook_link' => 'string',
-            'instagram_link' => 'string',
-            'whatsapp' => 'string',
+            'facebook_link' => 'nullable|string',
+            'instagram_link' => 'nullable|string',
+            'whatsapp' => 'nullable|string',
             'opening_hours' => 'json',
             'payment_methods' => 'json',
             'localization' => 'string',
