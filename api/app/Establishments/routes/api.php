@@ -7,7 +7,7 @@ Route::prefix('api/v1')
     ->group(function() {
         Route::middleware(['auth-api'])
             ->group(function() {
-                Route::apiResource('establishments', EstablishmentController::class);
+                Route::apiResource('establishments', EstablishmentController::class)->except('index');
                 Route::post('establishments/{establishment_id}/users', [EstablishmentController::class, 'createUser']);
                 Route::get('establishments/{establishment_id}/users', [EstablishmentController::class, 'getUsers']);
                 Route::get('establishments/{establishment_id}/users/{user_id}', [EstablishmentController::class, 'getUser']);
@@ -18,5 +18,6 @@ Route::prefix('api/v1')
         Route::middleware(['api'])
             ->group(function() {
                 Route::get('establishments/menuCode/{menu_code}', [EstablishmentController::class, 'showByMenuCode']);
+                Route::get('establishments', [EstablishmentController::class, 'index']);
             });
     });

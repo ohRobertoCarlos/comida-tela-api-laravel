@@ -26,6 +26,11 @@ class EstablishmentService
         return $this->repository->all();
     }
 
+    public function getAllPaginated(array $input = [])
+    {
+        return $this->repository->getAllPaginated($input);
+    }
+
     public function get(string $id) : BaseModel
     {
         return $this->repository->findById($id);

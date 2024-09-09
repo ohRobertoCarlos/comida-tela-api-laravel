@@ -12,6 +12,7 @@ use App\Establishments\Http\Resources\Establishment;
 use App\Establishments\Services\EstablishmentService;
 use App\Http\Controllers\BaseController;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 use Illuminate\Support\Facades\Log;
@@ -24,9 +25,14 @@ class EstablishmentController extends BaseController
     )
     {}
 
-    public function index(UserIsAdminRequest $request) : ResourceCollection
+    /**
+    * @unauthenticated
+    */
+    public function index(Request $request) : ResourceCollection
     {
-        return Establishment::collection($this->service->getAll());
+        $establishments = $this->service->getAllPaginated($request->all());
+
+        return Establishment::collection($establishments);
     }
 
     public function show(UserIsAdminRequest $request, $establishmentId) : Establishment|JsonResponse

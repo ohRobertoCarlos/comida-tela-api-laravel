@@ -119,4 +119,16 @@ class EstablishmentRepository extends BaseRepository
             ->with(['menu.itemsWithoutCategory', 'profile', 'categories.items'])
             ->first();
     }
+
+    public function getAllPaginated(array $input = [], int $perPage = 30)
+    {
+        $model = $this->getModel();
+
+        if (array_key_exists('search', $input)) {
+            $model = $model->where('name', 'like', '%' . $input['search'] . '%')
+                ->orWhere('description', 'like', '%' . $input['search'] . '%');
+        }
+
+        return $model->with(['profile'])->paginate($perPage);
+    }
 }
