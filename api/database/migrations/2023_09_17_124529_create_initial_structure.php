@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('establishments', function (Blueprint $table) {
             $table->uuid('id')->primary();
 
-            $table->string('name', 100)->unique();
+            $table->string('name', 100);
             $table->text('description')->nullable();
             $table->string('menu_code', 150)->unique();
 

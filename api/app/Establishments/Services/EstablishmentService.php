@@ -6,6 +6,7 @@ use App\Contracts\Repository;
 use App\Establishments\Repositories\EstablishmentRepository;
 use App\Models\BaseModel;
 use chillerlan\QRCode\QRCode;
+use Exception;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
@@ -39,6 +40,14 @@ class EstablishmentService
     public function create(array $data) : BaseModel|null
     {
         $data['menu_code'] = Str::slug($data['name'] ?? '', '-');
+
+        $establishmentSameMenuCode = !empty($data['menu_code']) ?
+            $this->repository->getByMenuCode($data['menu_code']) :
+            '';
+
+        if (!empty($establishmentSameMenuCode)) {
+            $data['menu_code'] = (explode('-', Str::uuid()->toString())[1]) . '-' . $data['menu_code'];
+        }
 
         DB::beginTransaction();
         try {

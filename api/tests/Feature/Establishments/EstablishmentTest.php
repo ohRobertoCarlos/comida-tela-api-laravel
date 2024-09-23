@@ -244,3 +244,24 @@ test("must delete user of establishment", function () {
 
     $reponse->assertOk();
 });
+
+test('must create an establishment with same name and different menu code', function () {
+    $token = getTokenUserAdminLogged();
+    $establishment = createEstablishment();
+    \Illuminate\Support\Facades\Storage::fake('test-disk-public');
+
+    $reponse = withHeaders([
+        'accept' => 'application/json',
+        'Authorization' => 'Bearer ' . $token
+    ])
+        ->postJson('/api/v1/establishments', [
+            'name' => $establishment->name,
+            'description' => 'description'
+        ]);
+
+    $reponse->assertCreated();
+
+    expect($reponse->json()['data']['menu_code'])
+        ->not()
+        ->toEqual($establishment->menu_code);
+});
