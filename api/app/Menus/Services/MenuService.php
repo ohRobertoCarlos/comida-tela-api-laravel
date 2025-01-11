@@ -77,7 +77,7 @@ class MenuService
         if (isset($data['cover_image'])) {
             $data['cover_image_location'] = $this->storeImageItem(
                 file: $data['cover_image'],
-                menu: $this->getMenu($item->menu_id)
+                menu: $this->findById($item->menu_id)
             );
         }
 
@@ -119,5 +119,10 @@ class MenuService
         $baseUrl = trim(env('APP_CLIENT_URL', 'http://localhost'), '/');
 
         return $baseUrl . '/' . $menuCodeEncoded;
+    }
+
+    public function findById(string $id) : BaseModel
+    {
+        return $this->repository->findById(id: $id);
     }
 }
