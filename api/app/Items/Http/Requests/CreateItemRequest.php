@@ -25,8 +25,8 @@ class CreateItemRequest extends UserIsOfEstablismentRequest
         return [
             'title' => 'required|string|min:3',
             'description' => 'required|string|min:3',
-            'max_price' => 'nullable|decimal:2',
-            'min_price' => 'required|decimal:2',
+            'max_price' => 'nullable|decimal:0,2',
+            'min_price' => 'required|decimal:0,2',
             'currency' => 'required|string',
             'portions' => 'required|integer',
             'cover_image' => 'required|image',
