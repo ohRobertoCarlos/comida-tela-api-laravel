@@ -11,6 +11,9 @@ use Exception;
 use Illuminate\Http\File;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
+use Throwable;
 
 class MenuService
 {
@@ -74,11 +77,12 @@ class MenuService
             }
         }
 
-        if (isset($data['cover_image'])) {
-            $data['cover_image_location'] = $this->storeImageItem(
-                file: $data['cover_image'],
-                menu: $this->findById($item->menu_id)
-            );
+        if (isset($data['cover_image_url'])) {
+            if (!$this->validateFileUrl($data['cover_image_url'])) {
+                throw new Exception("Invalid cover image url");
+            }
+
+            $data['cover_image_location'] = $data['cover_image_url'];
         }
 
         $this->itemService->update(id: $item->id, data: $data);
@@ -91,6 +95,30 @@ class MenuService
         }
 
         return true;
+    }
+
+    private function validateFileUrl(string $fileUrl)
+    {
+        return $this->isFileInPublicStorage($fileUrl);
+    }
+
+    private function isFileInPublicStorage(string $fileUrl): bool
+    {
+        $publicDiskName = env('PUBLIC_FILESYSTEM_DISK', 'public');
+
+        try {
+            $baseUrl = Storage::disk($publicDiskName)->url('');
+            if (!\Illuminate\Support\Str::startsWith($fileUrl, $baseUrl)) {
+                return false;
+            }
+
+            $relativePath = \Illuminate\Support\Str::after($fileUrl, $baseUrl);
+
+            return Storage::disk($publicDiskName)->exists($relativePath);
+        } catch (Throwable $e) {
+            Log::error($e->getMessage());
+            return false;
+        }
     }
 
     public function deleteItem(string $itemId) : bool

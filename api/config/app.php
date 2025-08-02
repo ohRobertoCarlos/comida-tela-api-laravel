@@ -175,6 +175,7 @@ return [
         App\Profiles\Providers\ProfileProvider::class,
         App\Ratings\Providers\RatingProvider::class,
         App\Categories\Providers\CategoryProvider::class,
+        App\FileUpload\Providers\FileUploadProvider::class,
     ])->toArray(),
 
     /*

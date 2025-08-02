@@ -25,13 +25,14 @@ class UpdateItemRequest extends UserIsOfEstablismentRequest
         return [
             'title' => 'string|min:3',
             'description' => 'string|min:3',
-            'max_price' => 'nullable|decimal:2',
-            'min_price' => 'decimal:2',
+            'max_price' => 'nullable|integer|decimal:0,1,2',
+            'min_price' => 'integer|decimal:0,1,2',
             'currency' => 'string',
             'portions' => 'integer',
             'cover_image' => 'image',
             'categories' => 'array',
             'categories.*' => 'string',
+            'cover_image_url' => 'string'
         ];
     }
 }
