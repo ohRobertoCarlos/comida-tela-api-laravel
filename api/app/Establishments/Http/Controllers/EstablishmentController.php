@@ -35,10 +35,13 @@ class EstablishmentController extends BaseController
         return Establishment::collection($establishments);
     }
 
-    public function show(UserIsAdminRequest $request, $establishmentId) : Establishment|JsonResponse
+    /**
+    * @unauthenticated
+    */
+    public function show(Request $request, $establishmentId) : Establishment|JsonResponse
     {
         try {
-            $establishment = $this->service->get(id: $establishmentId);
+            $establishment = $this->service->getWithRelations(id: $establishmentId);
         } catch(Throwable $e) {
             Log::error($e->getMessage());
         }

@@ -37,6 +37,11 @@ class EstablishmentService
         return $this->repository->findById($id);
     }
 
+    public function getWithRelations(string $id, array $relations = ['menu', 'profile', 'categories']) : BaseModel
+    {
+        return $this->repository->findByIdWithRelations($id, $relations);
+    }
+
     public function create(array $data) : BaseModel|null
     {
         $data['menu_code'] = Str::slug($data['name'] ?? '', '-');

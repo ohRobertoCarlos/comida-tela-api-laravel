@@ -23,11 +23,39 @@ class ProfileService
             throw new Exception('Profile not found');
         }
 
-        if (!empty($data['image_cover_profile'])) {
-            $data['image_cover_profile_location'] = $this->storageImageProfile($data['image_cover_profile'], $establishmentId);
+        if (isset($data['image_cover_profile_url'])) {
+            if (!$this->validateFileUrl($data['image_cover_profile_url'])) {
+                throw new Exception("Invalid cover image url");
+            }
+
+            $data['image_cover_profile_location'] = $data['image_cover_profile_url'];
         }
 
         return $profile->update($data);
+    }
+
+    private function validateFileUrl(string $fileUrl)
+    {
+        return $this->isFileInPublicStorage($fileUrl);
+    }
+
+    private function isFileInPublicStorage(string $fileUrl): bool
+    {
+        $publicDiskName = env('PUBLIC_FILESYSTEM_DISK', 'public');
+
+        try {
+            $baseUrl = Storage::disk($publicDiskName)->url('');
+            if (!\Illuminate\Support\Str::startsWith($fileUrl, $baseUrl)) {
+                return false;
+            }
+
+            $relativePath = \Illuminate\Support\Str::after($fileUrl, $baseUrl);
+
+            return Storage::disk($publicDiskName)->exists($relativePath);
+        } catch (Throwable $e) {
+            Log::error($e->getMessage());
+            return false;
+        }
     }
 
     public function storageImageProfile(File|UploadedFile $image, string $establishmentId) : string

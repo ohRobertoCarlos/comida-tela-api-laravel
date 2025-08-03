@@ -57,4 +57,11 @@ abstract class BaseRepository implements Repository
             }
         }
     }
+
+    public function findByIdWithRelations(string $id, array $relations): BaseModel|null
+    {
+        return $this->getModel()
+            ->with($relations)
+            ->find($id);
+    }
 }

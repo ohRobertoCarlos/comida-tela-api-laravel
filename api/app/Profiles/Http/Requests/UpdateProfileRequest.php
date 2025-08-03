@@ -26,11 +26,11 @@ class UpdateProfileRequest extends UserIsOfEstablismentRequest
             'facebook_link' => 'nullable|string',
             'instagram_link' => 'nullable|string',
             'whatsapp' => 'nullable|string',
-            'opening_hours' => 'json',
-            'payment_methods' => 'json',
-            'localization' => 'string',
-            'address' => 'string',
-            'image_cover_profile' => 'image'
+            'opening_hours' => 'nullable|json',
+            'payment_methods' => 'nullable|json',
+            'localization' => 'nullable|string',
+            'address' => 'nullable|string',
+            'image_cover_profile_url' => 'nullable|string'
         ];
     }
 }
