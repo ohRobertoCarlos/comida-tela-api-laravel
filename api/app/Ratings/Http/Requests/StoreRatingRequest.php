@@ -22,16 +22,16 @@ class StoreRatingRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'price_stars' => 'integer|min:1|max:5',
-            'environment_stars' => 'integer|min:1|max:5',
-            'service_stars' => 'integer|min:1|max:5',
-            'products_stars' => 'integer|min:1|max:5',
+            'price_stars' => 'integer|max:5',
+            'environment_stars' => 'integer|max:5',
+            'service_stars' => 'integer|max:5',
+            'products_stars' => 'integer|max:5',
             'date_visit' => 'date',
-            'comment' => 'string',
-            'name' => 'string',
-            'phone_number' => 'string',
-            'birthday' => 'date',
-            'feedback' => 'nullable|in:positive,negative',
+            'comment' => 'nullable|string',
+            'name' => 'nullable|string',
+            'phone_number' => 'nullable|string',
+            'birthday' => 'nullable|date',
+            'feedback' => 'nullable|in:positive,negative'
         ];
     }
 }
