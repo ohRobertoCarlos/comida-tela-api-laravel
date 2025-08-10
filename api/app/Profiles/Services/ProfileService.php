@@ -31,6 +31,14 @@ class ProfileService
             $data['image_cover_profile_location'] = $data['image_cover_profile_url'];
         }
 
+        if (isset($data['image_cover_background_profile_url'])) {
+            if (!$this->validateFileUrl($data['image_cover_background_profile_url'])) {
+                throw new Exception("Invalid cover background image url");
+            }
+
+            $data['image_cover_background_profile_location'] = $data['image_cover_background_profile_url'];
+        }
+
         return $profile->update($data);
     }
 

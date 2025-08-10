@@ -21,6 +21,7 @@ class Profile extends BaseModel
         'payment_methods',
         'localization',
         'address',
-        'image_cover_profile_location'
+        'image_cover_profile_location',
+        'image_cover_background_profile_location'
     ];
 }

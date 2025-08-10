@@ -26,6 +26,7 @@ class Profile extends JsonResource
             'localization' => $this->localization,
             'address' => $this->address,
             'image_cover_profile_location_url' => $this->image_cover_profile_location ? StorageService::getUrlPublicFile(publicFilePath: $this->image_cover_profile_location) : '',
+            'image_cover_background_profile_url' => $this->image_cover_background_profile_location ? StorageService::getUrlPublicFile(publicFilePath: $this->image_cover_background_profile_location) : '',
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

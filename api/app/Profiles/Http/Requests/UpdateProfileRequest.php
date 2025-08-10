@@ -30,7 +30,8 @@ class UpdateProfileRequest extends UserIsOfEstablismentRequest
             'payment_methods' => 'nullable|json',
             'localization' => 'nullable|string',
             'address' => 'nullable|string',
-            'image_cover_profile_url' => 'nullable|string'
+            'image_cover_profile_url' => 'nullable|string',
+            'image_cover_background_profile_url' => 'nullable|string'
         ];
     }
 }

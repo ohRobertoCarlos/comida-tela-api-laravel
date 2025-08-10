@@ -41,6 +41,7 @@ return new class extends Migration
             $table->string('localization', 70)->nullable();
             $table->string('address', 255)->nullable();
             $table->string('image_cover_profile_location', 255)->nullable();
+            $table->string('image_cover_background_profile_location', 255)->nullable();
 
             $table->foreign('establishment_id')->references('id')->on('establishments');
 
