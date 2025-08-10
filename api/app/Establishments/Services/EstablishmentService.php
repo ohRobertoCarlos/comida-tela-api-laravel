@@ -3,6 +3,7 @@
 namespace App\Establishments\Services;
 
 use App\Contracts\Repository;
+use App\Establishments\Events\EstablishmentUpdated;
 use App\Establishments\Repositories\EstablishmentRepository;
 use App\Models\BaseModel;
 use chillerlan\QRCode\QRCode;
@@ -72,7 +73,27 @@ class EstablishmentService
 
     public function update(string $id, array $data) : bool
     {
-        return $this->repository->update($id, $data);
+        if (isset($data['name'])) {
+            $menuCode = Str::slug($data['name'] ?? '', '-');
+
+            $establishmentSameMenuCode = !empty($menuCode) ?
+                $this->repository->getByMenuCode($menuCode) :
+                '';
+
+            $data['menu_code'] = $menuCode;
+
+            if (!empty($establishmentSameMenuCode) && $establishmentSameMenuCode->id !== $id) {
+                $data['menu_code'] = (explode('-', Str::uuid()->toString())[1]) . '-' . $menuCode;
+            }
+        }
+
+        $updated = $this->repository->update($id, $data);
+
+        if ($updated) {
+            event(new EstablishmentUpdated($id));
+        }
+
+        return $updated;
     }
 
     public function delete(string $id) : bool
@@ -140,5 +161,11 @@ class EstablishmentService
     public function getByMenuCode(string $menuCode) : BaseModel|null
     {
         return $this->repository->getByMenuCode(menuCode: $menuCode);
+    }
+
+    public function updateQrCode(string $id) : void
+    {
+        $establishment = $this->repository->findById($id);
+        $this->generateQrCodeMenu(establishment: $establishment);
     }
 }

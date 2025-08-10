@@ -163,19 +163,20 @@ return [
         /*
          * Application Service Providers...
          */
-        App\Providers\AppServiceProvider::class,
-        App\Providers\AuthServiceProvider::class,
+        \App\Providers\AppServiceProvider::class,
+        \App\Providers\AuthServiceProvider::class,
         // App\Providers\BroadcastServiceProvider::class,
-        App\Providers\EventServiceProvider::class,
-        App\Providers\RouteServiceProvider::class,
-        App\Auth\Providers\AuthProvider::class,
-        App\Establishments\Providers\EstablishmentProvider::class,
-        App\Menus\Providers\MenuProvider::class,
-        App\Items\Providers\ItemProvider::class,
-        App\Profiles\Providers\ProfileProvider::class,
-        App\Ratings\Providers\RatingProvider::class,
-        App\Categories\Providers\CategoryProvider::class,
-        App\FileUpload\Providers\FileUploadProvider::class,
+        \App\Providers\EventServiceProvider::class,
+        \App\Providers\RouteServiceProvider::class,
+        \App\Auth\Providers\AuthProvider::class,
+        \App\Establishments\Providers\EstablishmentProvider::class,
+        \App\Menus\Providers\MenuProvider::class,
+        \App\Items\Providers\ItemProvider::class,
+        \App\Profiles\Providers\ProfileProvider::class,
+        \App\Ratings\Providers\RatingProvider::class,
+        \App\Categories\Providers\CategoryProvider::class,
+        \App\FileUpload\Providers\FileUploadProvider::class,
+        \App\Establishments\Providers\EventServiceProvider::class,
     ])->toArray(),
 
     /*

@@ -54,6 +54,7 @@ test("must cannot update establishments", function () {
 test("must update establishments", function () {
     $token = getTokenUserAdminLogged();
     $establishment = createEstablishment();
+    \Illuminate\Support\Facades\Storage::fake('test-disk-public');
 
     $establishment->name = 'Restaurant SA';
     $establishment->description = fake()->text();
